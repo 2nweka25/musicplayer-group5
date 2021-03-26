@@ -6,6 +6,7 @@ import {
   Link as MuiLink,
 } from "@material-ui/core";
 import Link from "next/link";
+
 import { Search } from "@material-ui/icons";
 import React from "react";
 import Navbar from "../components/navbar";

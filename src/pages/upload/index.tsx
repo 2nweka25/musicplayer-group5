@@ -57,9 +57,11 @@ const Upload = (props: Props) => {
             margin="normal"
           />
 
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Upload
-          </Button>
+          <Box mt={2} width="70%" margin="auto">
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Upload
+            </Button>
+          </Box>
         </form>
       </Container>
     </div>
