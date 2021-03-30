@@ -1,69 +1,130 @@
-import { Box } from "@material-ui/core";
-import Head from "next/head";
-import useStyles from "./styles";
+import {
+  Button,
+  Container,
+  InputAdornment,
+  Typography,
+  Link as MuiLink,
+} from "@material-ui/core";
+import Link from "next/link";
 
-export default function Home() {
+import { Search } from "@material-ui/icons";
+import React from "react";
+import Navbar from "../components/navbar";
+import Song from "../components/song";
+import useStyles, { Searchbar } from "./styles";
+
+const Index = () => {
   const classes = useStyles();
+
   return (
-    <div className={classes.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <Navbar />
+      <Container>
+        <Searchbar
+          placeholder="Search a song"
+          fullWidth
+          endAdornment={
+            <InputAdornment position="end">
+              <Search />
+            </InputAdornment>
+          }
+        />
 
-      <main className={classes.main}>
-        <h1 className={classes.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <section className={classes.homeSection}>
+          <div className={classes.sectionTitle}>
+            <Typography variant="h5">New Releases</Typography>
+            <Link href="/all" passHref>
+              <MuiLink underline="none" color="textSecondary">
+                Show all
+              </MuiLink>
+            </Link>
+          </div>
 
-        <Box bgcolor="primary.main">MATERIAL-UI THEME</Box>
+          <div className={classes.sectionRow}>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/1.jpg"
+            />
 
-        <p className={classes.description}>
-          Get started by editing{" "}
-          <code className={classes.code}>pages/index.js</code>
-        </p>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/2.jpg"
+            />
 
-        <div className={classes.grid}>
-          <a href="https://nextjs.org/docs" className={classes.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/3.jpg"
+            />
+          </div>
+        </section>
 
-          <a href="https://nextjs.org/learn" className={classes.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+        <section className={classes.homeSection}>
+          <div className={classes.sectionTitle}>
+            <Typography variant="h5">My Starred Songs</Typography>
+            <Link href="/all" passHref>
+              <MuiLink underline="none" color="textSecondary">
+                Show all
+              </MuiLink>
+            </Link>
+          </div>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={classes.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+          <div className={classes.sectionRow}>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/4.jpg"
+            />
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={classes.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/5.jpg"
+            />
 
-      <footer className={classes.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={classes.logo} />
-        </a>
-      </footer>
-    </div>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/6.jpg"
+            />
+          </div>
+        </section>
+
+        <section className={classes.homeSection}>
+          <div className={classes.sectionTitle}>
+            <Typography variant="h5">Discover</Typography>
+            <Link href="/all" passHref>
+              <MuiLink underline="none" color="textSecondary">
+                Show all
+              </MuiLink>
+            </Link>
+          </div>
+
+          <div className={classes.sectionRow}>
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/7.jpg"
+            />
+
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/8.jpg"
+            />
+
+            <Song
+              name="Example Song"
+              artist="Example Name"
+              artwork="/images/artwork/9.jpg"
+            />
+          </div>
+        </section>
+      </Container>
+    </>
   );
-}
+};
+
+export default Index;
