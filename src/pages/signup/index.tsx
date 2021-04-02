@@ -1,10 +1,30 @@
 import { TextField, Grid, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core";
-import React from 'react'
+import React, { EventHandler, FormEventHandler, useState } from 'react'
 import Link from 'next/link'
 
 
 
 const SignUp = () => {
+
+    const [formData, setFormData] = useState({ firstname: "", lastname: "", email: "", password: "" })
+
+    const handleChange = (e) => {
+        const { value, name } = e;
+        setFormData({ ...formData, [name]: value })
+        console.log(formData)
+    }
+
+    const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+        e.preventDefault();
+
+        const user = await AuthenticatorAssertionResponse.createUserWithEmailAndPassword(
+            formData.email,
+            formData.password
+        )
+    }
+
+
+
     return (
         <Container>
             <Box
@@ -23,38 +43,41 @@ const SignUp = () => {
                     spacing={2}
                 >
                     <Grid item xs={6}>
-                        <TextField id="outlined-basic" label="Firstname" variant="outlined" />
+                        <TextField id="outlined-basic" label="Firstname" variant="outlined" name="firstname" onChange={handleChange} />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField id="outlined-basic" label="Lastname" variant="outlined" />
+                        <TextField id="outlined-basic" label="Lastname" variant="outlined" name="lastname" onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth id="outlined-basic" label="Username" variant="outlined" />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField fullWidth id="outlined-basic" label="Email" variant="outlined" />
+                        <TextField fullWidth id="outlined-basic" label="Email" variant="outlined" name="email" onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField fullWidth id="outlined-basic" label="Password" variant="outlined" />
+                        <TextField fullWidth id="outlined-basic" label="Password" variant="outlined" name="password" onChange={handleChange} />
                     </Grid>
                 </Grid>
-            </Box>
 
 
-            <Box textAlign="center">
-                <Typography> Already have an account? </Typography>
-                <Link href="/signin" passHref>
-                    <MuiLink underline="none" color="textPrimary">
-                        Sign In
+                <Box textAlign="center">
+                    <Typography> Already have an account? </Typography>
+                    <Link href="/signin" passHref>
+                        <MuiLink underline="none" color="textPrimary">
+                            Sign In
                 </MuiLink>
-                </Link>
+                    </Link>
+                </Box>
+
+                <Box mt={5} display="flex" justifyContent="center">
+                    <Box width="70%">
+                        <Button type="submit" variant="contained" color="primary" fullWidth >Sign Up</Button>
+                    </Box>
+                </Box>
+
             </Box>
 
-            <Box mt={5} display="flex" justifyContent="center">
-                <Box width="70%">
-                    <Button type="submit" variant="contained" color="primary" fullWidth >Sign Up</Button>
-                </Box>
-            </Box>
+
 
         </Container>
     )
