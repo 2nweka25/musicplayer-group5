@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import useStyles from "./styles";
 import {
   AppBar,
@@ -22,7 +22,7 @@ import {
   Menu,
   Settings,
 } from "@material-ui/icons";
-
+import AuthContext from "../../lib/authContext";
 const listItems = [
   { text: "Home", Icon: Home },
   { text: "Upload Music", Icon: CloudUpload },
@@ -32,7 +32,7 @@ const listItems = [
 const Navbar = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
+  //const {user} = useContext(AuthContext)
   const handleClick = () => setOpen(!open);
 
   return (

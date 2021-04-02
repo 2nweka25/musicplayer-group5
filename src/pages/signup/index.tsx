@@ -1,6 +1,8 @@
 import { TextField, Grid, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core";
 import React, { EventHandler, FormEventHandler, useState } from 'react'
 import Link from 'next/link'
+import { auth } from "../../lib/firebase";
+import axios from "axios";
 
 
 
@@ -17,10 +19,17 @@ const SignUp = () => {
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
 
-        const user = await AuthenticatorAssertionResponse.createUserWithEmailAndPassword(
+        const user = await auth.createUserWithEmailAndPassword(
             formData.email,
             formData.password
         )
+
+
+        const { data } = await axios.post("/auth", {
+            email: formData.email,
+            password: formData.password
+        })
+
     }
 
 
