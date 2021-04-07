@@ -1,35 +1,34 @@
-import { TextField, Grid, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core";
-import React, { EventHandler, FormEventHandler, useState } from 'react'
+import { TextField, Grid, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core"
+import React, { useState, FC } from 'react'
+import { useRouter } from "next/router"
 import Link from 'next/link'
-import { auth } from "../../lib/firebase";
-import axios from "axios";
+import axios from "axios"
 
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}
 
+const SignUp: FC<FormData> = ({ }) => {
+    const router = useRouter()
 
-const SignUp = () => {
-
-    const [formData, setFormData] = useState({ firstname: "", lastname: "", email: "", password: "" })
+    const [formData, setFormData] = useState({ username: "", firstname: "", lastname: "", email: "", password: "" })
 
     const handleChange = (e) => {
-        const { value, name } = e;
+        const { value, name } = e.target;
         setFormData({ ...formData, [name]: value })
-        console.log(formData)
     }
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const user = await auth.createUserWithEmailAndPassword(
-            formData.email,
-            formData.password
-        )
-
-
-        const { data } = await axios.post("/auth", {
-            email: formData.email,
-            password: formData.password
-        })
-
+        try {
+            const response = await axios.post('/api/auth/signup', formData)
+            if (response.status === 201) router.push("/");
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
 
@@ -44,6 +43,7 @@ const SignUp = () => {
             </Box>
             <Box component="form"
                 my={3}
+                onSubmit={handleSubmit}
             >
                 <Grid container
                     direction="row"
@@ -58,7 +58,7 @@ const SignUp = () => {
                         <TextField id="outlined-basic" label="Lastname" variant="outlined" name="lastname" onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField fullWidth id="outlined-basic" label="Username" variant="outlined" />
+                        <TextField fullWidth id="outlined-basic" label="Username" variant="outlined" name="username" onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth id="outlined-basic" label="Email" variant="outlined" name="email" onChange={handleChange} />
@@ -67,7 +67,6 @@ const SignUp = () => {
                         <TextField fullWidth id="outlined-basic" label="Password" variant="outlined" name="password" onChange={handleChange} />
                     </Grid>
                 </Grid>
-
 
                 <Box textAlign="center">
                     <Typography> Already have an account? </Typography>
