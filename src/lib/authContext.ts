@@ -1,5 +1,8 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
+import { UserInterface } from "../lib/firebase";
 
-const AuthContext = createContext({});
+const AuthContext = createContext<null | UserInterface>(null);
 
-export default AuthContext
+export const useAuth = () => useContext(AuthContext);
+
+export default AuthContext;
