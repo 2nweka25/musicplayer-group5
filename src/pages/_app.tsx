@@ -13,11 +13,15 @@ export default function MyApp(props) {
   const [user, setUser] = useState({})
 
   React.useEffect(() => {
-    auth.onAuthStateChanged(function (user) {
+    auth.onAuthStateChanged(async function (user) {
       if (user) {
+        console.log(user)
         setUser(user)
+      } else {
+        console.log("couldnt get user")
       }
     })
+
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {

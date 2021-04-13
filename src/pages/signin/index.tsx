@@ -1,12 +1,10 @@
 import { TextField, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core"
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { auth } from "../../lib/firebase"
 import { useRouter } from "next/router"
-import axios from "axios"
-
 
 const SignIn = () => {
-
     const router = useRouter()
 
     const [formData, setFormData] = useState({ email: "", password: "" })
@@ -19,10 +17,12 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/auth/signin', formData)
-            if (response.status === 201) router.push("/");
-        } catch (error) {
-            console.log(error.message);
+            const user = await auth.signInWithEmailAndPassword(formData.email, formData.password)
+            if (user) {
+                router.push("/")
+            }
+        } catch (err) {
+            console.log(err)
         }
     }
 

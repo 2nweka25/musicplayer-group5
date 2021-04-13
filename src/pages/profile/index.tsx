@@ -1,22 +1,52 @@
 import { TextField, Container, Box, Typography, Link as MuiLink, Button, Avatar, InputAdornment } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit'
 import useStyles from "./styles.module"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import { auth, firestore } from "../../lib/firebase"
 import { useRouter } from "next/router"
+import AuthContext from "../../lib/authContext";
 //import axios from "axios"
 
 
 const Profile = () => {
     const classes = useStyles()
     const router = useRouter();
+    const user = useContext(AuthContext)
 
     const [localUser, setUser] = useState({ first_name: "", last_name: "", username: "", email: "" })
     const [formData, setFormData] = useState({ fullname: "", username: "", email: "" })
+    const [loading, setLoading] = useState(true);
 
-    // Get user Data
+    // Fetch user storage data
     useEffect(() => {
+        getUser();
+    }, [])
+
+    const getUser = async () => {
+        if (user) {
+            const local = await firestore.collection('users').doc(user.uid).get();
+            const data = local.data()
+            setUser(data)
+            setLoading(!loading)
+        } else {
+            console.log("Couldn't get User")
+        }
+    }
+
+    const updateUser = async () => {
+        // Update User
+        if (user) {
+            firestore.collection('users').doc(user.uid).set({
+                email: formData.email !== "" ? formData.email : user.email,
+                first_name: formData.fullname !== "" ? formData.fullname.split(" ")[0] : localUser.first_name,
+                last_name: formData.fullname !== "" ? formData.fullname.split(" ")[1] : localUser.last_name,
+                username: formData.username !== "" ? formData.username : localUser.username
+            });
+        } else {
+            console.log("Couldn't get User")
+        }
+        // Reload User data (instant feedback)
         auth.onAuthStateChanged(async function (user) {
             if (user) {
                 console.log(user)
@@ -28,7 +58,7 @@ const Profile = () => {
                 console.log("Couldn't get User")
             }
         });
-    }, [])
+    }
 
     // Watch input
     const handleInput = (e) => {
@@ -41,31 +71,7 @@ const Profile = () => {
     // If there is no data provided in an input line, it will resave user data along with the new data provided
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Update User
-        auth.onAuthStateChanged(async function (user) {
-            if (user) {
-                firestore.collection('users').doc(user.uid).set({
-                    email: formData.email !== "" ? formData.email : user.email,
-                    first_name: formData.fullname !== "" ? formData.fullname.split(" ")[0] : localUser.first_name,
-                    last_name: formData.fullname !== "" ? formData.fullname.split(" ")[1] : localUser.last_name,
-                    username: formData.username !== "" ? formData.username : localUser.username
-                });
-            } else {
-                console.log("Couldn't get User")
-            }
-            // Reload User data (instant feedback)
-            auth.onAuthStateChanged(async function (user) {
-                if (user) {
-                    console.log(user)
-                    const data = firestore.collection('users').doc(user.uid)
-                    const doc = await data.get();
-                    setUser({ ...localUser, ...doc.data() });
-                    return
-                } else {
-                    console.log("Couldn't get User")
-                }
-            });
-        });
+        updateUser();
     }
     // Sign Out and redirect to signin page
     const signout = (e) => {
@@ -78,24 +84,9 @@ const Profile = () => {
         });
     }
 
-    /*
-    // This meant to communicate with the api
-    const getUserData = async () => {
-        try {
-            const response = await axios.post('/api/auth/profile')
-            if (response.status === 200) {
-                console.log(response.user);
-                setUser(response.user);
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-*/
+    if (loading) { return <h1>Loading...</h1> } else {
 
-
-    return (
-        <Container>
+        return (<Container>
             <Box mt={4}>
                 <Typography variant="h5">My Profile</Typography>
             </Box>
@@ -137,7 +128,8 @@ const Profile = () => {
                 </Link>
             </Box>
         </Container>
-    )
+        )
+    }
 }
 
 export default Profile

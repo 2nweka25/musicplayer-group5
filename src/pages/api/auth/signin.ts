@@ -1,3 +1,4 @@
+/*
 import { NextApiRequest, NextApiResponse } from "next"
 import { auth } from "../../../lib/firebase"
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,3 +13,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
     }
 }
+*/
