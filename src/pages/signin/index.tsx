@@ -38,7 +38,7 @@ const SignIn = () => {
                 mt={8}
                 onSubmit={handleSubmit}
             >
-                <TextField margin="normal" fullWidth id="outlined-basic" label="Username" variant="outlined" name="email" onChange={handleChange} />
+                <TextField margin="normal" fullWidth id="outlined-basic" label="Email" variant="outlined" name="email" onChange={handleChange} />
                 <TextField margin="normal" fullWidth id="outlined-basic" label="Password" variant="outlined" name="password" onChange={handleChange} />
 
                 <Box textAlign="center">
