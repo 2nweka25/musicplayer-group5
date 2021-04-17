@@ -4,13 +4,11 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../config/dark-theme";
-import { auth, UserInterface } from "../lib/firebase";
-import AuthContext from "../lib/authContext";
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
-  const [user, setUser] = useState<UserInterface | null>(null);
+  const [user, setUser] = useState({});
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -18,10 +16,6 @@ export default function MyApp(props) {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
-
-    const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
-
-    return unsubscribe;
   }, []);
 
   return (
@@ -35,9 +29,8 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AuthContext.Provider value={user}>
-          <Component {...pageProps} />
-        </AuthContext.Provider>
+
+        <Component {...pageProps} />
       </ThemeProvider>
     </React.Fragment>
   );
