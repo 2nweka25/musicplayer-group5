@@ -53,35 +53,14 @@ const PlaySong = () => {
     Songs.findById(id).then((fetchedSong: Song) => setSong(fetchedSong));
   }, [id]);
 
-  const findById = async(id: string | string[])=> {
-    const { data } = await axios.get(`/api/songs/${id}`);
-    return data;
-  };
-
-  const getRandomSong = async ()=>{
-    const {data} = await axios.get("/api/songs/random");
-    return data;
-  }
-
-  const Songs = { findById, getRandomSong};
-
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
   };
 
- // const handleNext: MouseEventHandler<HTMLButtonElement> = (e)=> {
-   // Songs.getRandomSong.then((randomSong)=> setSong(randomSong))
+  const handleNext: MouseEventHandler<HTMLButtonElement> = (e)=> {
+    Songs.getRandomSong.then((randomSong)=> setSong(randomSong));
     
-  }
-  const handleNext = async (e) => {
-    e.preventDefault();
-    try {
-        const response = await axios.get(Songs.getRandomSong)
-        if (response.status === 201) router.push("/");
-    } catch (error) {
-        console.log(error.message);
-    }
-}
+  };
 
   return (
     <>

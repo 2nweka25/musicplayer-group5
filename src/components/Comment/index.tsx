@@ -23,12 +23,7 @@ const Comment: FC<FormData> = ({}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-        const response = await axios.post('/api/comments/index', formData)
-        if (response.status === 201) router.push("/");
-    } catch (error) {
-        console.log(error.message);
-    }
+        const response = await axios.post('/api/comments/index', formData);
 }
 
 
