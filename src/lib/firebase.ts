@@ -9,6 +9,7 @@ const firebaseConfig = {
   storageBucket: "musicplayer-app.appspot.com",
   messagingSenderId: "83316896536",
   appId: "1:83316896536:web:32116ca8fbf10e99d7a46d",
+  databaseURL: "musicplayer-app.firebaseio.com"
 };
 
 if (!firebase.apps.length) {
