@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "musicplayer-app.appspot.com",
   messagingSenderId: "83316896536",
   appId: "1:83316896536:web:32116ca8fbf10e99d7a46d",
-  databaseURL: "musicplayer-app.firebaseio.com"
+  databaseURL: "musicplayer-app.firebaseio.com",
 };
 
 if (!firebase.apps.length) {
@@ -18,3 +18,5 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+
+export type UserInterface = firebase.User;
