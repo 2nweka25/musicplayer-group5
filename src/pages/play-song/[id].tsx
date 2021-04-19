@@ -2,14 +2,20 @@ import { MouseEventHandler, useEffect, useState } from "react";
 
 import {
   Box,
+  Button,
   Container,
+  FormGroup,
   IconButton,
+  InputBase,
+  Modal,
+  Slide,
   Slider,
   Typography,
 } from "@material-ui/core";
 
 import {
   GetApp,
+  KeyboardArrowDown,
   Pause,
   PlayArrow,
   Repeat,
@@ -27,7 +33,7 @@ import ReactHowler from "react-howler";
 import Songs from "../../lib/services/song";
 import useStyles from "./styles";
 import Song from "../../components/song";
-import songs from "../api/songs";
+import Comment from "../../components/comment";
 
 interface Song {
   artist: string;
@@ -45,6 +51,7 @@ const PlaySong = () => {
 
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -59,6 +66,12 @@ const PlaySong = () => {
   const handleNext: MouseEventHandler<HTMLButtonElement> = (e)=> {
     Songs.getRandomSong().then((randomSong)=> setSong(randomSong));
     
+  const handleNext: MouseEventHandler<HTMLButtonElement> = (e) => {
+    Songs.getRandomSong().then((randomSong) => setSong(randomSong));
+  };
+
+  const toggleComments: MouseEventHandler<SVGSVGElement | HTMLElement> = () => {
+    setShowComments(!showComments);
   };
 
   return (
@@ -101,7 +114,56 @@ const PlaySong = () => {
           <Repeat />
           <Replay />
         </Box>
+
+        <Box
+          mt={2}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          onClick={toggleComments}
+        >
+          <Typography>Comments</Typography>
+          <KeyboardArrowDown />
+        </Box>
       </Container>
+
+      <Modal open={showComments} onBackdropClick={toggleComments}>
+        <Slide in={showComments} direction="up">
+          <Box className={classes.comments}>
+            <KeyboardArrowDown onClick={toggleComments} />
+            <Typography variant="h5">Comments</Typography>
+
+            <Box
+              height="90%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-end"
+            >
+              <Comment text="This is a comment" />
+              <Comment
+                text="This is a comment from the artist of the song"
+                createdByArtist
+              />
+
+              <Box component="form" mt={4}>
+                <FormGroup>
+                  <InputBase
+                    className={classes.commentInput}
+                    placeholder="Write a comment..."
+                    rows={3}
+                    multiline
+                  />
+
+                  <Button variant="contained" color="primary" disableElevation>
+                    Post
+                  </Button>
+                </FormGroup>
+              </Box>
+            </Box>
+          </Box>
+        </Slide>
+      </Modal>
     </>
   );
 };
