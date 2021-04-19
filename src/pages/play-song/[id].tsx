@@ -63,6 +63,9 @@ const PlaySong = () => {
     setIsPlaying(!isPlaying);
   };
 
+  const handleNext: MouseEventHandler<HTMLButtonElement> = (e)=> {
+    Songs.getRandomSong().then((randomSong)=> setSong(randomSong));
+    
   const handleNext: MouseEventHandler<HTMLButtonElement> = (e) => {
     Songs.getRandomSong().then((randomSong) => setSong(randomSong));
   };
