@@ -6,10 +6,16 @@ const findById = async (id: string | string[]) => {
 };
 
 const getRandomSong = async ()=>{
-  const {data} = await axios.get("/api/songs/random");
+  const {data} = await axios.get(`/api/songs/random`);
   return data;
 }
 
-const Songs = { findById, getRandomSong};
+const getComment = async ()=>{
+  const {data} = await axios.get(`/api/comments/index`);
+  return data;
+}
+
+const Songs = { findById, getRandomSong, getComment};
+
 
 export default Songs;
