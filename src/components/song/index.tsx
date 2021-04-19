@@ -3,33 +3,40 @@ import useStyles from "./styles";
 import { Typography } from "@material-ui/core";
 import Artwork from "../artwork";
 import { Star } from "@material-ui/icons";
+import Link from "next/link";
 
 interface Props {
-  name: string;
+  id: string;
   artist: string;
-  artwork: string;
+  artworkURL: string;
+  audioURL: string;
+  comments: [];
+  owner: string;
+  title: string;
 }
 
-const Song = ({ name, artist, artwork }: Props) => {
+const Song = ({ id, artworkURL, title, artist }: Props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.song}>
-      <Artwork src={artwork} />
-      <div className={classes.songInfo}>
-        <div>
-          <Typography className={classes.songName}>Example Song</Typography>
-          <Typography className={classes.songArtist} color="textSecondary">
-            Example Name
-          </Typography>
-        </div>
+    <Link href={`/play-song/${id}`} passHref>
+      <div className={classes.song}>
+        <Artwork src={artworkURL} />
+        <div className={classes.songInfo}>
+          <div>
+            <Typography className={classes.songName}>{title}</Typography>
+            <Typography className={classes.songArtist} color="textSecondary">
+              {artist}
+            </Typography>
+          </div>
 
-        <div className={classes.rating}>
-          <Star fontSize="small" />
-          <Typography component="span">2</Typography>
+          <div className={classes.rating}>
+            <Star fontSize="small" />
+            <Typography component="span">2</Typography>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

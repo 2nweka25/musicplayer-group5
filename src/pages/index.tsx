@@ -8,13 +8,37 @@ import {
 import Link from "next/link";
 
 import { Search } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Song from "../components/song";
 import useStyles, { Searchbar } from "./styles";
+import Playlists from "../lib/services/playlists";
+
+interface Song {
+  id: string;
+  artist: string;
+  artworkURL: string;
+  audioURL: string;
+  comments: [];
+  owner: string;
+  title: string;
+}
+
+interface Playlist {
+  name: string;
+  songs: Song[];
+}
 
 const Index = () => {
   const classes = useStyles();
+  const [playlists, setPlaylsits] = useState<Playlist[] | null>(null);
+
+  useEffect(() => {
+    const discover = Playlists.getDiscover();
+    const newReleases = Playlists.getNewReleases();
+
+    Promise.all([discover, newReleases]).then((data) => setPlaylsits(data));
+  }, []);
 
   return (
     <>
@@ -30,98 +54,24 @@ const Index = () => {
           }
         />
 
-        <section className={classes.homeSection}>
-          <div className={classes.sectionTitle}>
-            <Typography variant="h5">New Releases</Typography>
-            <Link href="/all" passHref>
-              <MuiLink underline="none" color="textSecondary">
-                Show all
-              </MuiLink>
-            </Link>
-          </div>
+        {playlists?.map(({ name, songs }) => (
+          <section key={name} className={classes.homeSection}>
+            <div className={classes.sectionTitle}>
+              <Typography variant="h5">{name}</Typography>
+              <Link href="/all" passHref>
+                <MuiLink underline="none" color="textSecondary">
+                  Show all
+                </MuiLink>
+              </Link>
+            </div>
 
-          <div className={classes.sectionRow}>
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/1.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/2.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/3.jpg"
-            />
-          </div>
-        </section>
-
-        <section className={classes.homeSection}>
-          <div className={classes.sectionTitle}>
-            <Typography variant="h5">My Starred Songs</Typography>
-            <Link href="/all" passHref>
-              <MuiLink underline="none" color="textSecondary">
-                Show all
-              </MuiLink>
-            </Link>
-          </div>
-
-          <div className={classes.sectionRow}>
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/4.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/5.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/6.jpg"
-            />
-          </div>
-        </section>
-
-        <section className={classes.homeSection}>
-          <div className={classes.sectionTitle}>
-            <Typography variant="h5">Discover</Typography>
-            <Link href="/all" passHref>
-              <MuiLink underline="none" color="textSecondary">
-                Show all
-              </MuiLink>
-            </Link>
-          </div>
-
-          <div className={classes.sectionRow}>
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/7.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/8.jpg"
-            />
-
-            <Song
-              name="Example Song"
-              artist="Example Name"
-              artwork="/images/artwork/9.jpg"
-            />
-          </div>
-        </section>
+            <div className={classes.sectionRow}>
+              {songs.map((song) => (
+                <Song key={song.id} {...song} />
+              ))}
+            </div>
+          </section>
+        ))}
       </Container>
     </>
   );
