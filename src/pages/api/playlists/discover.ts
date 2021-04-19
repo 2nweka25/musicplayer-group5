@@ -14,3 +14,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ message: error });
   }
 };
+
