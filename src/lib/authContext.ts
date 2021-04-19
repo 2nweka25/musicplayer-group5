@@ -1,7 +1,11 @@
 import { createContext, useContext } from "react";
-import { UserInterface } from "../lib/firebase";
 
-const AuthContext = createContext<null | UserInterface>(null);
+interface User {
+  email: string;
+  uid: string;
+}
+
+const AuthContext = createContext<null | any>(null);
 
 export const useAuth = () => useContext(AuthContext);
 

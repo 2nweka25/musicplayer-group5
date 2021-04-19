@@ -4,6 +4,8 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../config/dark-theme";
+import { auth } from "../lib/firebase";
+import AuthContext from "../lib/authContext";
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -16,6 +18,10 @@ export default function MyApp(props) {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+
+    const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
+
+    return unsubscribe;
   }, []);
 
   return (
@@ -30,7 +36,9 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        <Component {...pageProps} />
+        <AuthContext.Provider value={user}>
+          <Component {...pageProps} />
+        </AuthContext.Provider>
       </ThemeProvider>
     </React.Fragment>
   );
