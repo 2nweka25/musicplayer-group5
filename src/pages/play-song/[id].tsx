@@ -31,9 +31,13 @@ import { useRouter } from "next/router";
 
 import ReactHowler from "react-howler";
 import Songs from "../../lib/services/song";
+import Comments from "../../lib/services/comments";
 import useStyles from "./styles";
 import Song from "../../components/song";
-import Comment from "../../components/comment";
+import Comment from "../../components/Comment";
+
+
+
 
 interface Song {
   artist: string;
@@ -51,6 +55,7 @@ const PlaySong = () => {
 
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playedIds, setPlayedIds] = useState([])
   const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
@@ -63,16 +68,32 @@ const PlaySong = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleNext: MouseEventHandler<HTMLButtonElement> = (e)=> {
-    Songs.getRandomSong().then((randomSong)=> setSong(randomSong));
+  const songArray =(e)=> {}
     
   const handleNext: MouseEventHandler<HTMLButtonElement> = (e) => {
     Songs.getRandomSong().then((randomSong) => setSong(randomSong));
   };
 
+
+
   const toggleComments: MouseEventHandler<SVGSVGElement | HTMLElement> = () => {
     setShowComments(!showComments);
+    
   };
+  
+    const [formData, setFormData] = useState({ comments: "" })
+
+
+    const handleChange = (e) => {
+        const { value, comment } = e.target;
+        setFormData({ ...formData, [comment]: value })
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const user = await Comments.postComment(formData.comments)
+    }
+
 
   return (
     <>
@@ -153,9 +174,9 @@ const PlaySong = () => {
                     placeholder="Write a comment..."
                     rows={3}
                     multiline
+                    onClick={handleChange}
                   />
-
-                  <Button variant="contained" color="primary" disableElevation>
+                  <Button variant="contained" color="primary" disableElevation onClick={handleSubmit}>
                     Post
                   </Button>
                 </FormGroup>
@@ -168,4 +189,6 @@ const PlaySong = () => {
   );
 };
 
-export default PlaySong;
+export default PlaySong
+
+// hello
