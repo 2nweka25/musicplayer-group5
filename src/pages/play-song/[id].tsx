@@ -42,12 +42,17 @@ import useStyles from "./styles";
 import Song from "../../components/song";
 import Comment from "../../components/comment";
 
+interface Comment {
+  text: string;
+  postedBy: string;
+}
+
 interface Song {
   artist: string;
   artworkURL: string;
   audioURL: string;
-  comments: [];
   owner: string;
+  comments: Comment[];
   title: string;
 }
 
@@ -64,11 +69,19 @@ const PlaySong = () => {
 
   useEffect(() => {
     if (!id) return;
+    const songs = Songs.findById(id);
+    const comments = Songs.getComments(id);
 
-    Songs.findById(id).then((fetchedSong: Song) => setSong(fetchedSong));
+    Promise.all([songs, comments]).then((data) => {
+      const song = data[0];
+      const comments = data[1];
+      setSong({ ...song, comments });
+    });
 
     console.log("id of song changed", id);
   }, [id]);
+
+  console.log(song);
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
@@ -167,11 +180,9 @@ const PlaySong = () => {
               flexDirection="column"
               justifyContent="flex-end"
             >
-              <Comment text="This is a comment" />
-              <Comment
-                text="This is a comment from the artist of the song"
-                createdByArtist
-              />
+              {song.comments.map((comment, i) => (
+                <Comment key={i} {...comment} />
+              ))}
 
               <Box component="form" mt={4} onSubmit={handleSubmit}>
                 <FormGroup>
