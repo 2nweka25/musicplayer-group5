@@ -1,12 +1,11 @@
 import { TextField, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core"
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { auth } from "../../lib/firebase"
+import Auth from "../../lib/services/auth"
 import { useRouter } from "next/router"
 
 const SignIn = () => {
     const router = useRouter()
-
     const [formData, setFormData] = useState({ email: "", password: "" })
 
     const handleChange = (e) => {
@@ -17,7 +16,7 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const user = await auth.signInWithEmailAndPassword(formData.email, formData.password)
+            const user = await Auth.signIn(formData)
             if (user) {
                 router.push("/")
             }
@@ -49,15 +48,12 @@ const SignIn = () => {
                 </MuiLink>
                     </Link>
                 </Box>
-
                 <Box mt={5} display="flex" justifyContent="center">
                     <Box width="70%">
                         <Button type="submit" variant="contained" color="primary" fullWidth >Sign In</Button>
                     </Box>
                 </Box>
-
             </Box>
-
         </Container>
     )
 }

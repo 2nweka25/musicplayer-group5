@@ -3,9 +3,11 @@ import EditIcon from '@material-ui/icons/Edit'
 import useStyles from "./styles.module"
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import { auth, firestore } from "../../lib/firebase"
+import { firestore } from "../../lib/firebase"
 import { useRouter } from "next/router"
-import AuthContext from "../../lib/authContext";
+import AuthContext from "../../lib/authContext"
+import User from "../../lib/services/user"
+import Auth from "../../lib/services/auth"
 //import axios from "axios"
 
 
@@ -18,46 +20,23 @@ const Profile = () => {
     const [formData, setFormData] = useState({ fullname: "", username: "", email: "" })
     const [loading, setLoading] = useState(true);
 
-    // Fetch user storage data
     useEffect(() => {
-        getUser();
-    }, [])
-
-    const getUser = async () => {
-        if (user) {
-            const local = await firestore.collection('users').doc(user.uid).get();
-            const data = local.data()
-            setUser(data)
-            setLoading(!loading)
-        } else {
-            console.log("Couldn't get User")
-        }
-    }
+        setUser(user);
+        setLoading(false);
+    }, [user])
 
     const updateUser = async () => {
-        // Update User
-        if (user) {
-            firestore.collection('users').doc(user.uid).set({
-                email: formData.email !== "" ? formData.email : user.email,
-                first_name: formData.fullname !== "" ? formData.fullname.split(" ")[0] : localUser.first_name,
-                last_name: formData.fullname !== "" ? formData.fullname.split(" ")[1] : localUser.last_name,
-                username: formData.username !== "" ? formData.username : localUser.username
-            });
-        } else {
-            console.log("Couldn't get User")
-        }
-        // Reload User data (instant feedback)
-        auth.onAuthStateChanged(async function (user) {
-            if (user) {
-                console.log(user)
-                const data = firestore.collection('users').doc(user.uid)
-                const doc = await data.get();
-                setUser({ ...localUser, ...doc.data() });
-                return
-            } else {
-                console.log("Couldn't get User")
-            }
+        // Push user data where provided, then save
+        await firestore.collection('users').doc(user.userId).set({
+            email: formData.email !== "" ? formData.email : user.email,
+            first_name: formData.fullname !== "" ? formData.fullname.split(" ")[0] : localUser.first_name,
+            last_name: formData.fullname !== "" ? formData.fullname.split(" ")[1] : localUser.last_name,
+            username: formData.username !== "" ? formData.username : localUser.username
         });
+
+        // Get new user data
+        const data = await User.getProfile(user.userId)
+        setUser(data);
     }
 
     // Watch input
@@ -66,22 +45,17 @@ const Profile = () => {
         setFormData({ ...formData, [name]: value })
     }
 
-    // Save new details or save the previous
-    // Did not wrote line by line since it would make the code much longer and complicated
-    // If there is no data provided in an input line, it will resave user data along with the new data provided
+    // If no data given, save
     const handleSubmit = (e) => {
         e.preventDefault();
         updateUser();
     }
+
     // Sign Out and redirect to signin page
-    const signout = (e) => {
+    const signout = async (e) => {
         e.preventDefault();
-        auth.signOut().then(() => {
-            console.log("signed out")
-            router.push("/signin")
-        }).catch((error) => {
-            console.log(`Error: ${error}`)
-        });
+        const response = await Auth.signOut();
+        response ? router.push("/signin") : console.log('Something went wrong!')
     }
 
     if (loading) { return <h1>Loading...</h1> } else {
@@ -103,17 +77,17 @@ const Profile = () => {
             <Box component="form"
                 mt={4}
             >
-                <TextField margin="normal" fullWidth id="outlined-basic" name="fullname" label={localUser && `${localUser.first_name} ${localUser.last_name}`} variant="outlined" InputProps={{
+                <TextField margin="normal" fullWidth id="outlined-basic" name="fullname" label={`${localUser?.first_name} ${localUser?.last_name}`} variant="outlined" InputProps={{
                     endAdornment: <InputAdornment position="end" onClick={handleSubmit}>
                         <EditIcon />
                     </InputAdornment>
                 }} onChange={handleInput} />
-                <TextField margin="normal" fullWidth id="outlined-basic" name="username" label={localUser && localUser.username} variant="outlined" InputProps={{
+                <TextField margin="normal" fullWidth id="outlined-basic" name="username" label={localUser?.username} variant="outlined" InputProps={{
                     endAdornment: <InputAdornment position="end" onClick={handleSubmit}>
                         <EditIcon />
                     </InputAdornment>
                 }} onChange={handleInput} />
-                <TextField margin="normal" fullWidth id="outlined-basic" name="email" label={localUser && localUser.email} variant="outlined" InputProps={{
+                <TextField margin="normal" fullWidth id="outlined-basic" name="email" label={localUser?.email} variant="outlined" InputProps={{
                     endAdornment: <InputAdornment position="end" onClick={handleSubmit}>
                         <EditIcon />
                     </InputAdornment>
