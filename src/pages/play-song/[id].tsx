@@ -180,7 +180,7 @@ const PlaySong = () => {
               flexDirection="column"
               justifyContent="flex-end"
             >
-              {song.comments.map((comment, i) => (
+              {song?.comments.map((comment, i) => (
                 <Comment key={i} {...comment} />
               ))}
 
