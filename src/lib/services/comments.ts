@@ -1,8 +1,14 @@
 import axios from "axios";
 
-  const postComment = async(data)=>{
-    axios.post("/api/comments", data)
-  }
+interface Comment {
+  user: string;
+  comments: string;
+}
+
+  const postComment = async(comment: Comment)=>{
+    const { data } = await axios.post("/api/comments", comment)
+    return data;
+  };
 
 const Comments = {postComment};
 
