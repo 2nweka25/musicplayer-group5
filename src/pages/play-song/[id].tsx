@@ -34,7 +34,7 @@ import Songs from "../../lib/services/song";
 import Comments from "../../lib/services/comments";
 import useStyles from "./styles";
 import Song from "../../components/song";
-import Comment from "../../components/Comment";
+import Comment from "../../components/comment";
 
 
 
@@ -55,7 +55,6 @@ const PlaySong = () => {
 
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playedIds, setPlayedIds] = useState([])
   const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
@@ -66,14 +65,18 @@ const PlaySong = () => {
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
+  }; 
+ 
+  const handleNext: MouseEventHandler<HTMLButtonElement> = async ()=> {
+    const randomSong = await Songs.getRandomSong();
+    setSong(randomSong);
+    router.push(`/play-song/${randomSong.id}`, undefined, {shallow: true});
   };
 
-  const songArray =(e)=> {}
-    
-  const handleNext: MouseEventHandler<HTMLButtonElement> = (e) => {
-    Songs.getRandomSong().then((randomSong) => setSong(randomSong));
-  };
 
+ const handlePrevious: MouseEventHandler<HTMLButtonElement> = () =>{
+    router.back();
+  }
 
 
   const toggleComments: MouseEventHandler<SVGSVGElement | HTMLElement> = () => {
@@ -81,17 +84,16 @@ const PlaySong = () => {
     
   };
   
-    const [formData, setFormData] = useState({ comments: "" })
-
+    const [formData, setFormData] = useState({ comments: "" , user:""})
 
     const handleChange = (e) => {
-        const { value, comment } = e.target;
-        setFormData({ ...formData, [comment]: value })
+        const { value, name } = e.target;
+        setFormData({ ...formData, [name]: value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = await Comments.postComment(formData.comments)
+        const user = await Comments.postComment(formData)
     }
 
 
@@ -118,7 +120,7 @@ const PlaySong = () => {
           <Star />
         </Box>
         <Box textAlign="center" mt={2}>
-          <IconButton className={classes.mediaControl}>
+          <IconButton className={classes.mediaControl} onClick={handlePrevious}>
             <SkipPrevious />
           </IconButton>
           <IconButton className={classes.mediaControl} onClick={handlePlay}>
@@ -174,7 +176,8 @@ const PlaySong = () => {
                     placeholder="Write a comment..."
                     rows={3}
                     multiline
-                    onClick={handleChange}
+                    name="comments"
+                    onChange={handleChange}
                   />
                   <Button variant="contained" color="primary" disableElevation onClick={handleSubmit}>
                     Post
