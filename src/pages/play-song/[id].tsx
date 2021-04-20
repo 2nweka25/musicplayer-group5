@@ -1,4 +1,10 @@
-import { MouseEventHandler, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Box,
@@ -36,32 +42,46 @@ import useStyles from "./styles";
 import Song from "../../components/song";
 import Comment from "../../components/comment";
 
-
-
+interface Comment {
+  text: string;
+  postedBy: string;
+}
 
 interface Song {
   artist: string;
   artworkURL: string;
   audioURL: string;
-  comments: [];
   owner: string;
+  comments: Comment[];
   title: string;
 }
 
 const PlaySong = () => {
   const classes = useStyles();
   const router = useRouter();
+
   const { id } = router.query;
 
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [formData, setFormData] = useState({ comments: "" });
 
   useEffect(() => {
     if (!id) return;
+    const songs = Songs.findById(id);
+    const comments = Songs.getComments(id);
 
-    Songs.findById(id).then((fetchedSong: Song) => setSong(fetchedSong));
+    Promise.all([songs, comments]).then((data) => {
+      const song = data[0];
+      const comments = data[1];
+      setSong({ ...song, comments });
+    });
+
+    console.log("id of song changed", id);
   }, [id]);
+
+  console.log(song);
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
@@ -73,29 +93,26 @@ const PlaySong = () => {
     router.push(`/play-song/${randomSong.id}`, undefined, {shallow: true});
   };
 
-
- const handlePrevious: MouseEventHandler<HTMLButtonElement> = () =>{
+  const handlePrevious: MouseEventHandler<HTMLButtonElement> = () => {
     router.back();
-  }
-
+  };
 
   const toggleComments: MouseEventHandler<SVGSVGElement | HTMLElement> = () => {
     setShowComments(!showComments);
-    
   };
-  
-    const [formData, setFormData] = useState({ comments: "" , user:""})
 
-    const handleChange = (e) => {
-        const { value, name } = e.target;
-        setFormData({ ...formData, [name]: value })
-    }
+  const handleChange: ChangeEventHandler<
+    HTMLTextAreaElement | HTMLInputElement
+  > = (e) => {
+    const { value, name } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const user = await Comments.postComment(formData)
-    }
-
+  const handleSubmit: FormEventHandler<HTMLElement> = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    // const user = await Comments.postComment(formData.comments);
+  };
 
   return (
     <>
@@ -163,23 +180,26 @@ const PlaySong = () => {
               flexDirection="column"
               justifyContent="flex-end"
             >
-              <Comment text="This is a comment" />
-              <Comment
-                text="This is a comment from the artist of the song"
-                createdByArtist
-              />
+              {song.comments.map((comment, i) => (
+                <Comment key={i} {...comment} />
+              ))}
 
-              <Box component="form" mt={4}>
+              <Box component="form" mt={4} onSubmit={handleSubmit}>
                 <FormGroup>
                   <InputBase
+                    name="comments"
                     className={classes.commentInput}
                     placeholder="Write a comment..."
                     rows={3}
                     multiline
-                    name="comments"
                     onChange={handleChange}
                   />
-                  <Button variant="contained" color="primary" disableElevation onClick={handleSubmit}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                  >
                     Post
                   </Button>
                 </FormGroup>
@@ -192,6 +212,6 @@ const PlaySong = () => {
   );
 };
 
-export default PlaySong
+export default PlaySong;
 
 // hello

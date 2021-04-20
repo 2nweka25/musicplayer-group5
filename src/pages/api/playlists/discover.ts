@@ -2,14 +2,16 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { firestore } from "../../../lib/firebase";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const allSongs = firestore.collection("playlists").doc("discover");
+  const discover = firestore.collection("playlists").doc("discover");
 
   try {
-    const { docs } = await allSongs.get();
-    const discover = docs.map((doc) => doc.data());
+    const { docs } = await discover.collection("songs").get();
 
-    res.status(200).json(discover);
+    const songs = docs.map((document) => document.data());
+
+    res.status(200).json({ name: "Discover", songs });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ message: error });
   }
 };
+
