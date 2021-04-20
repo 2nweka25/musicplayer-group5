@@ -41,6 +41,7 @@ import Comments from "../../lib/services/comments";
 import useStyles from "./styles";
 import Song from "../../components/song";
 import Comment from "../../components/comment";
+import { useAuth } from "../../lib/authContext";
 
 interface Comment {
   text: string;
@@ -59,14 +60,20 @@ interface Song {
 const PlaySong = () => {
   const classes = useStyles();
   const router = useRouter();
+  const loggedInUser = useAuth();
 
   const { id } = router.query;
 
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [formData, setFormData] = useState({ comments: "" });
+  const [formData, setFormData] = useState({ songId: id, text: "", postedBy:""});
 
+  useEffect(() => {
+     setFormData({...formData, postedBy: loggedInUser.userId})
+  }, [])
+
+  
   useEffect(() => {
     if (!id) return;
     const songs = Songs.findById(id);
@@ -77,11 +84,7 @@ const PlaySong = () => {
       const comments = data[1];
       setSong({ ...song, comments });
     });
-
-    console.log("id of song changed", id);
   }, [id]);
-
-  console.log(song);
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
@@ -111,7 +114,7 @@ const PlaySong = () => {
   const handleSubmit: FormEventHandler<HTMLElement> = async (e) => {
     e.preventDefault();
     console.log(formData);
-    // const user = await Comments.postComment(formData.comments);
+    const user = await Comments.postComment(formData);
   };
 
   return (
@@ -181,13 +184,14 @@ const PlaySong = () => {
               justifyContent="flex-end"
             >
               {song?.comments.map((comment, i) => (
-                <Comment key={i} {...comment} />
+                <Comment key={i} {...comment}/>
+
               ))}
 
               <Box component="form" mt={4} onSubmit={handleSubmit}>
                 <FormGroup>
                   <InputBase
-                    name="comments"
+                    name="text"
                     className={classes.commentInput}
                     placeholder="Write a comment..."
                     rows={3}
