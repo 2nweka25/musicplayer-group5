@@ -2,6 +2,7 @@ POST http://localhost:3000/api/comments HTTP/1.1
 content-type: application/json
 
 {
-    "user": "tony",
-    "comment": "sending comment"
+    "postedBy": "NszzyOYeujRwYUD0rQe90xfawI03",
+    "songId": "5Px5UeTw5n6qHC3hRfnq",
+    "text": "sending comment"
 }
