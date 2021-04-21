@@ -23,15 +23,18 @@ const uploadMetadata = (img, song, ownerId) => {
 }
 
 const uploadImage = (img) => {
-
     // Get image name
     const split = img.split("/")
     const name = split[split.length - 1]
 
+    var newMetadata = {
+        contentType: 'image/jpeg'
+    };
+
     const storageRef = firebase.storage().ref();
 
     // Upload file
-    var uploadTask = storageRef.child('artwork/' + name).put(img);
+    var uploadTask = storageRef.child('artwork/' + name).put(img, newMetadata);
 
     // Listen for state changes, errors, and completion of the upload.
     return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -73,6 +76,10 @@ const uploadImage = (img) => {
 
 const uploadSong = (song) => {
 
+    var newMetadata = {
+        contentType: 'audio/mpeg'
+    };
+
     // Get image name
     const split = song.split("/")
     const name = split[split.length - 1]
@@ -80,7 +87,7 @@ const uploadSong = (song) => {
     const storageRef = firebase.storage().ref();
 
     // Upload file
-    var uploadTask = storageRef.child('songs/' + name).put(song);
+    var uploadTask = storageRef.child('songs/' + name).put(song, newMetadata);
 
     // Listen for state changes, errors, and completion of the upload.
     return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
