@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import navList from './nav'
-
 import {
   MouseEventHandler,
   useState,
@@ -67,7 +65,7 @@ const Navbar = () => {
         </div>
         
         <List>
-          {navList.listItems.map(({ text ,path ,Icon }, i) => (
+          {listItems.map(({ text ,path ,Icon }, i) => (
             <Link href={path}>
                <ListItem  button key={i}>
                   <ListItemIcon>
