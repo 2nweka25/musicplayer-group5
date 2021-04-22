@@ -117,6 +117,27 @@ const PlaySong = () => {
     const user = await Comments.postComment(formData);
   };
 
+  const [downloadSong, setDownloadSong] = useState({audioURL: "" })
+
+  class seekUrl{
+    const songUrl = setDownloadSong{downloadSong.audioURL;}
+  }
+
+
+  const downloadBlob = (songUrl, blob: Blob): void => {
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(blob, songUrl);
+    } else {
+      const anchor = window.document.createElement('a');
+      anchor.href = window.URL.createObjectURL(blob);
+      anchor.download = songUrl;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      window.URL.revokeObjectURL(anchor.href);
+    }
+  }
+
   return (
     <>
       <ReactHowler
