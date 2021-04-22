@@ -1,25 +1,14 @@
 
 import firebase from "firebase/app";
 import "firebase/storage";
+import Songs from "./song";
 
-const uploadHandle = async (data, ownerId) => {
-    const { title, imgUrl, songUrl } = data;
-    // img & song should return {message: Success, url: fileUrl}
+const uploadHandle = async (data) => {
+    const { title, imgUrl, songUrl, description, tags, userId, first_name, last_name } = data;
     const img = await uploadImage(imgUrl)
-    //const imgUploadResult = await img
     const song = await uploadSong(songUrl)
-    //const songUploadResult = await song
-
-    //const metadata = await uploadMetadata(imgUploadResult.url, songUploadResult.url, ownerId, title)
-    return { message: 'Success' }
-}
-
-const uploadMetadata = (img, song, ownerId) => {
-    // create song in songs
-    // upload imageUrl
-    // upload songUrl
-    // upload ownerId
-    // upload title
+    const newSong = await Songs.setSong({ img, song, title, description, tags, userId, first_name, last_name })
+    return newSong
 }
 
 const uploadImage = (img) => {
@@ -35,8 +24,8 @@ const uploadImage = (img) => {
 
     // Upload file
     var uploadTask = storageRef.child('artwork/' + name).put(img, newMetadata);
-
     // Listen for state changes, errors, and completion of the upload.
+
     return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
         (snapshot) => {
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -68,7 +57,7 @@ const uploadImage = (img) => {
             // Upload completed successfully, now we can get the download URL
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                 console.log('File available at', downloadURL);
-                return { message: 'Success', url: `${downloadURL}` }
+                return downloadURL
             });
         }
     );
@@ -121,7 +110,7 @@ const uploadSong = (song) => {
             // Upload completed successfully, now we can get the download URL
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                 console.log('File available at', downloadURL);
-                return { message: 'Success', url: `${downloadURL}` }
+                return downloadURL
             });
         }
     );
@@ -129,6 +118,6 @@ const uploadSong = (song) => {
 
 
 
-const uploadService = { uploadHandle, uploadImage };
+const uploadService = { uploadHandle };
 
 export default uploadService

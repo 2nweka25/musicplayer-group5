@@ -15,6 +15,11 @@ const getComments = async (id: string | string[]) => {
   return data;
 };
 
-const Songs = { findById, getRandomSong, getComments };
+const setSong = async (songData) => {
+  const { data } = await axios.post(`/api/song/upload`, { ...songData });
+  return data;
+};
+
+const Songs = { findById, getRandomSong, getComments, setSong };
 
 export default Songs;

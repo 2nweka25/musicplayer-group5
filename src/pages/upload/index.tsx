@@ -9,7 +9,6 @@ import React, { useState, useContext } from "react";
 import Artwork from "../../components/artwork";
 import Navbar from "../../components/navbar";
 import uploadService from "../../lib/services/upload";
-import getProfile from "../../lib/services/user";
 import AuthContext from "../../lib/authContext"
 
 interface Props { }
@@ -26,13 +25,11 @@ const Upload = (props: Props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    /*
-    if (user) {
-      const upload = await uploadService.uploadHandle(data.songUrl, user.userId)
 
-    }*/
-    const upload = await uploadService.uploadImage(data.imgUrl)
-    console.log(upload)
+    if (user) {
+      const upload = await uploadService.uploadHandle({ ...data, ...user })
+      console.log(upload)
+    }
   }
 
   return (
@@ -71,7 +68,7 @@ const Upload = (props: Props) => {
           <TextField
             name="songUrl"
             variant="outlined"
-            label="Upload Link"
+            label="Song Url"
             color="primary"
             fullWidth
             margin="normal"
