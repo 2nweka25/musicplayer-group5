@@ -1,4 +1,8 @@
-import { useState, useContext } from "react";
+import Link from 'next/link'
+import {
+  MouseEventHandler,
+  useState,
+} from "react";
 import useStyles from "./styles";
 import {
   AppBar,
@@ -17,17 +21,19 @@ import {
   ChevronLeft,
   CloudUpload,
   Home,
-  Inbox,
-  Mail,
   Menu,
   Settings,
 } from "@material-ui/icons";
 import AuthContext from "../../lib/authContext";
+
+
 const listItems = [
-  { text: "Home", Icon: Home },
-  { text: "Upload Music", Icon: CloudUpload },
-  { text: "Settings", Icon: Settings },
+  { text: "Home", path:"/signin" , Icon: Home },
+  { text: "Upload Music", path: "/upload", Icon: CloudUpload },
+  { text: "Settings", path: "/profile", Icon: Settings },
+  
 ];
+
 
 const Navbar = () => {
   const classes = useStyles();
@@ -57,15 +63,18 @@ const Navbar = () => {
           <ChevronLeft onClick={handleClick} />
           <Avatar src="/images/avatar.svg" alt="profile" />
         </div>
-
+        
         <List>
-          {listItems.map(({ text, Icon }, i) => (
-            <ListItem button key={i}>
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+          {listItems.map(({ text ,path ,Icon }, i) => (
+            <Link href={path}>
+               <ListItem  button key={i}>
+                  <ListItemIcon>
+                    <Icon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+              </ListItem>
+            </Link>      
+            
           ))}
         </List>
         <Divider />
