@@ -1,6 +1,7 @@
 import { TextField, Grid, Container, Box, Typography, Link as MuiLink, Button } from "@material-ui/core"
 import React, { useState, FC } from 'react'
 import { useRouter } from "next/router"
+import Auth from "../../lib/services/auth"
 import Link from 'next/link'
 import axios from "axios"
 
@@ -16,16 +17,21 @@ const SignUp: FC<FormData> = ({ }) => {
 
     const [formData, setFormData] = useState({ username: "", firstname: "", lastname: "", email: "", password: "" })
 
+    // Watch input
     const handleChange = (e) => {
         const { value, name } = e.target;
         setFormData({ ...formData, [name]: value })
     }
 
+    //Handle form data
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/auth/signup', formData)
-            if (response.status === 201) router.push("/");
+            const response = await Auth.signUp(formData)
+            const user = await Auth.signIn(formData)
+            if (user) {
+                router.push("/");
+            }
         } catch (error) {
             console.log(error.message);
         }
@@ -67,7 +73,6 @@ const SignUp: FC<FormData> = ({ }) => {
                         <TextField fullWidth id="outlined-basic" label="Password" variant="outlined" name="password" onChange={handleChange} />
                     </Grid>
                 </Grid>
-
                 <Box textAlign="center">
                     <Typography> Already have an account? </Typography>
                     <Link href="/signin" passHref>
@@ -76,17 +81,12 @@ const SignUp: FC<FormData> = ({ }) => {
                 </MuiLink>
                     </Link>
                 </Box>
-
                 <Box mt={5} display="flex" justifyContent="center">
                     <Box width="70%">
                         <Button type="submit" variant="contained" color="primary" fullWidth >Sign Up</Button>
                     </Box>
                 </Box>
-
             </Box>
-
-
-
         </Container>
     )
 }

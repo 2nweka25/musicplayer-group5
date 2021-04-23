@@ -10,11 +10,13 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@types/react-howler": "^3.7.2",
     "axios": "^0.21.1",
     "firebase": "^8.3.1",
     "next": "10.0.9",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-howler": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.35",
