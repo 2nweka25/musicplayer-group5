@@ -28,9 +28,9 @@ import AuthContext from "../../lib/authContext";
 
 
 const listItems = [
-  { text: "Home", path:"src/pages/_app.tsx" , Icon: Home },
-  { text: "Upload Music", path: "/src/pages/upload/index.tsx", Icon: CloudUpload },
-  { text: "Settings", path: "/src/pages/profile/index.tsx", Icon: Settings },
+  { text: "Home", path:"/signin" , Icon: Home },
+  { text: "Upload Music", path: "/upload", Icon: CloudUpload },
+  { text: "Settings", path: "/profile", Icon: Settings },
   
 ];
 

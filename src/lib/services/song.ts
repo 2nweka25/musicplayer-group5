@@ -15,6 +15,11 @@ const getComments = async (id: string | string[]) => {
   return data;
 };
 
-const Songs = { findById, getRandomSong, getComments };
+const getAudioUrl  = async (id: string | string[]) => {
+  const { data } = await axios.get(`/api/song/${id}/download`);
+  return data;
+};
+
+const Songs = { findById, getRandomSong, getComments, getAudioUrl };
 
 export default Songs;

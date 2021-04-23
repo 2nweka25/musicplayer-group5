@@ -38,6 +38,7 @@ import { useRouter } from "next/router";
 import ReactHowler from "react-howler";
 import Songs from "../../lib/services/song";
 import Comments from "../../lib/services/comments";
+import downloadSong from "../../lib/services/download";
 import useStyles from "./styles";
 import Song from "../../components/song";
 import Comment from "../../components/comment";
@@ -78,11 +79,13 @@ const PlaySong = () => {
     if (!id) return;
     const songs = Songs.findById(id);
     const comments = Songs.getComments(id);
+  //  const download = Songs.getAudioUrl(id)
 
-    Promise.all([songs, comments]).then((data) => {
+    Promise.all([songs, comments ]).then((data) => {
       const song = data[0];
       const comments = data[1];
-      setSong({ ...song, comments });
+    //  const download = data[2];
+      setSong({ ...song, comments});
     });
   }, [id]);
 
@@ -117,25 +120,8 @@ const PlaySong = () => {
     const user = await Comments.postComment(formData);
   };
 
-  const [downloadSong, setDownloadSong] = useState({audioURL: "" })
-
-  class seekUrl{
-    const songUrl = setDownloadSong{downloadSong.audioURL;}
-  }
-
-
-  const downloadBlob = (songUrl, blob: Blob): void => {
-    if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(blob, songUrl);
-    } else {
-      const anchor = window.document.createElement('a');
-      anchor.href = window.URL.createObjectURL(blob);
-      anchor.download = songUrl;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      window.URL.revokeObjectURL(anchor.href);
-    }
+  const handleDownload: MouseEventHandler<SVGSVGElement | HTMLElement> = async() =>{
+    const user = await downloadSong.downloadSongUrl()
   }
 
   return (
@@ -153,7 +139,7 @@ const PlaySong = () => {
           justifyContent="space-between"
           mt={4}
         >
-          <GetApp />
+          <GetApp onClick={handleDownload}></GetApp>
           <Box>
             <Typography variant="h5">{song?.title}</Typography>
             <Typography>{song?.artist}</Typography>
