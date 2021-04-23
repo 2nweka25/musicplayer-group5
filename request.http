@@ -6,3 +6,6 @@ content-type: application/json
     "songId": "5Px5UeTw5n6qHC3hRfnq",
     "text": "sending comment"
 }
+
+###
+GET http://localhost:3000/api/song/5Px5UeTw5n6qHC3hRfnq/download
