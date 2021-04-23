@@ -39,7 +39,7 @@ import ReactHowler from "react-howler";
 import Songs from "../../lib/services/song";
 import Comments from "../../lib/services/comments";
 import downloadSong from "../../lib/services/download";
-import useStyles from "./styles";
+// import useStyles from "./styles";
 import Song from "../../components/song";
 import Comment from "../../components/comment";
 import { useAuth } from "../../lib/authContext";
@@ -59,7 +59,7 @@ interface Song {
 }
 
 const PlaySong = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const router = useRouter();
   const loggedInUser = useAuth();
 
@@ -68,35 +68,38 @@ const PlaySong = () => {
   const [song, setSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [formData, setFormData] = useState({ songId: id, text: "", postedBy:""});
+  const [formData, setFormData] = useState({
+    songId: id,
+    text: "",
+    postedBy: "",
+  });
 
   useEffect(() => {
-     setFormData({...formData, postedBy: loggedInUser.userId})
-  }, [])
+    setFormData({ ...formData, postedBy: loggedInUser.userId });
+  }, []);
 
-  
   useEffect(() => {
     if (!id) return;
     const songs = Songs.findById(id);
     const comments = Songs.getComments(id);
-  //  const download = Songs.getAudioUrl(id)
+    //  const download = Songs.getAudioUrl(id)
 
-    Promise.all([songs, comments ]).then((data) => {
+    Promise.all([songs, comments]).then((data) => {
       const song = data[0];
       const comments = data[1];
-    //  const download = data[2];
-      setSong({ ...song, comments});
+      //  const download = data[2];
+      setSong({ ...song, comments });
     });
   }, [id]);
 
   const handlePlay: MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsPlaying(!isPlaying);
-  }; 
- 
-  const handleNext: MouseEventHandler<HTMLButtonElement> = async ()=> {
+  };
+
+  const handleNext: MouseEventHandler<HTMLButtonElement> = async () => {
     const randomSong = await Songs.getRandomSong();
     setSong(randomSong);
-    router.push(`/play-song/${randomSong.id}`, undefined, {shallow: true});
+    router.push(`/play-song/${randomSong.id}`, undefined, { shallow: true });
   };
 
   const handlePrevious: MouseEventHandler<HTMLButtonElement> = () => {
@@ -116,13 +119,14 @@ const PlaySong = () => {
 
   const handleSubmit: FormEventHandler<HTMLElement> = async (e) => {
     e.preventDefault();
-    console.log(formData);
     const user = await Comments.postComment(formData);
   };
 
-  const handleDownload: MouseEventHandler<SVGSVGElement | HTMLElement> = async() =>{
-    const user = await downloadSong.downloadSongUrl()
-  }
+  const handleDownload: MouseEventHandler<
+    SVGSVGElement | HTMLElement
+  > = async () => {
+    const user = await downloadSong.downloadSongUrl();
+  };
 
   return (
     <>
@@ -147,13 +151,40 @@ const PlaySong = () => {
           <Star />
         </Box>
         <Box textAlign="center" mt={2}>
-          <IconButton className={classes.mediaControl} onClick={handlePrevious}>
+          <IconButton
+            style={{
+              marginTop: "32px",
+              marginRight: "8px",
+              background: "#950A1B",
+              boxShadow:
+                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+            }}
+            onClick={handlePrevious}
+          >
             <SkipPrevious />
           </IconButton>
-          <IconButton className={classes.mediaControl} onClick={handlePlay}>
+          <IconButton
+            style={{
+              marginTop: "32px",
+              marginRight: "8px",
+              background: "#950A1B",
+              boxShadow:
+                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+            }}
+            onClick={handlePlay}
+          >
             {isPlaying ? <Pause /> : <PlayArrow />}
           </IconButton>
-          <IconButton className={classes.mediaControl} onClick={handleNext}>
+          <IconButton
+            style={{
+              marginTop: "32px",
+              marginRight: "8px",
+              background: "#950A1B",
+              boxShadow:
+                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+            }}
+            onClick={handleNext}
+          >
             <SkipNext />
           </IconButton>
         </Box>
@@ -180,8 +211,20 @@ const PlaySong = () => {
 
       <Modal open={showComments} onBackdropClick={toggleComments}>
         <Slide in={showComments} direction="up">
-          <Box className={classes.comments}>
-            <KeyboardArrowDown onClick={toggleComments} />
+          <Box
+            style={{
+              background: "#262626",
+              borderTopLeftRadius: "19px",
+              borderTopRightRadius: "19px",
+              height: "calc(100vh - 56px)",
+              marginTop: "56px",
+              padding: "24px",
+            }}
+          >
+            <KeyboardArrowDown
+              style={{ display: "block", margin: "0 auto", fontSize: "2rem" }}
+              onClick={toggleComments}
+            />
             <Typography variant="h5">Comments</Typography>
 
             <Box
@@ -191,15 +234,19 @@ const PlaySong = () => {
               justifyContent="flex-end"
             >
               {song?.comments.map((comment, i) => (
-                <Comment key={i} {...comment}/>
-
+                <Comment key={i} {...comment} />
               ))}
 
               <Box component="form" mt={4} onSubmit={handleSubmit}>
                 <FormGroup>
                   <InputBase
                     name="text"
-                    className={classes.commentInput}
+                    style={{
+                      background: "#131313",
+                      borderRadius: "6px",
+                      padding: "8px",
+                      marginBottom: "16px",
+                    }}
                     placeholder="Write a comment..."
                     rows={3}
                     multiline

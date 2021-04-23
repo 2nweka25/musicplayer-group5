@@ -4,6 +4,7 @@ import {
   InputAdornment,
   Typography,
   Link as MuiLink,
+  Box,
 } from "@material-ui/core";
 import Link from "next/link";
 
@@ -11,7 +12,7 @@ import { Search } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Song from "../components/song";
-import useStyles, { Searchbar } from "./styles";
+// import useStyles, { Searchbar } from "./styles";
 import Playlists from "../lib/services/playlists";
 
 interface Song {
@@ -30,7 +31,7 @@ interface Playlist {
 }
 
 const Index = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [playlists, setPlaylsits] = useState<Playlist[] | null>(null);
 
   useEffect(() => {
@@ -41,10 +42,10 @@ const Index = () => {
   }, []);
 
   return (
-    <>
+    <div style={{ height: "100vh" }}>
       <Navbar />
       <Container>
-        <Searchbar
+        {/* <Searchbar
           placeholder="Search a song"
           fullWidth
           endAdornment={
@@ -52,28 +53,33 @@ const Index = () => {
               <Search />
             </InputAdornment>
           }
-        />
+        /> */}
 
         {playlists?.map(({ name, songs }) => (
-          <section key={name} className={classes.homeSection}>
-            <div className={classes.sectionTitle}>
+          <Box key={name} component="section" mb={8}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={3}
+            >
               <Typography variant="h5">{name}</Typography>
-              <Link href="/all" passHref>
+              {/* <Link href="/all" passHref>
                 <MuiLink underline="none" color="textSecondary">
                   Show all
                 </MuiLink>
-              </Link>
-            </div>
+              </Link> */}
+            </Box>
 
-            <div className={classes.sectionRow}>
+            <Box display="flex">
               {songs.map((song) => (
                 <Song key={song.id} {...song} />
               ))}
-            </div>
-          </section>
+            </Box>
+          </Box>
         ))}
       </Container>
-    </>
+    </div>
   );
 };
 
