@@ -1,10 +1,10 @@
 import {
-  Button,
+  InputBase,
   Container,
   InputAdornment,
   Typography,
   Link as MuiLink,
-  Box,
+  styled,
 } from "@material-ui/core";
 import Link from "next/link";
 
@@ -15,24 +15,9 @@ import Song from "components/song";
 // import useStyles, { Searchbar } from "./styles";
 import Playlists from "lib/services/playlists";
 
-interface Song {
-  id: string;
-  artist: string;
-  artworkURL: string;
-  audioURL: string;
-  comments: [];
-  owner: string;
-  title: string;
-}
-
-interface Playlist {
-  name: string;
-  songs: Song[];
-}
-
 const Index = () => {
   // const classes = useStyles();
-  const [playlists, setPlaylsits] = useState<Playlist[] | null>(null);
+  const [playlists, setPlaylsits] = useState<Playlists | null>(null);
 
   useEffect(() => {
     const discover = Playlists.getDiscover();
@@ -42,10 +27,10 @@ const Index = () => {
   }, []);
 
   return (
-    <div style={{ height: "100vh" }}>
+    <main>
       <Navbar />
       <Container>
-        {/* <Searchbar
+        <Searchbar
           placeholder="Search a song"
           fullWidth
           endAdornment={
@@ -53,34 +38,53 @@ const Index = () => {
               <Search />
             </InputAdornment>
           }
-        /> */}
+        />
 
         {playlists?.map(({ name, songs }) => (
-          <Box key={name} component="section" mb={8}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              mb={3}
-            >
+          <Playlist key={name}>
+            <Metadata>
               <Typography variant="h5">{name}</Typography>
-              {/* <Link href="/all" passHref>
-                <MuiLink underline="none" color="textSecondary">
-                  Show all
-                </MuiLink>
-              </Link> */}
-            </Box>
 
-            <Box display="flex">
+              <Link href="/all" passHref>
+                <MuiLink underline="none" color="textSecondary">
+                  Show All
+                </MuiLink>
+              </Link>
+            </Metadata>
+
+            <Songs>
               {songs.map((song) => (
                 <Song key={song.id} {...song} />
               ))}
-            </Box>
-          </Box>
+            </Songs>
+          </Playlist>
         ))}
       </Container>
-    </div>
+    </main>
   );
 };
+
+const Searchbar = styled(InputBase)(({ theme }) => ({
+  padding: "4px 16px",
+  background: "#F0F0F0",
+  color: "#949191",
+  borderRadius: "20px",
+  marginBottom: theme.spacing(2),
+}));
+
+const Playlist = styled("section")(({ theme }) => ({
+  marginBottom: theme.spacing(4),
+}));
+
+const Metadata = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginBottom: theme.spacing(3),
+}));
+
+const Songs = styled("div")({
+  display: "flex",
+});
 
 export default Index;
