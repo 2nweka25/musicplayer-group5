@@ -31,18 +31,18 @@ import {
   Star,
 } from "@material-ui/icons";
 
-import Artwork from "../../components/artwork";
-import Navbar from "../../components/navbar";
+import Artwork from "components/artwork";
+import Navbar from "components/navbar";
 import { useRouter } from "next/router";
 
 import ReactHowler from "react-howler";
-import Songs from "../../lib/services/song";
-import Comments from "../../lib/services/comments";
-import downloadSong from "../../lib/services/download";
+import Songs from "lib/services/song";
+import Comments from "lib/services/comments";
+import downloadSong from "lib/services/download";
 // import useStyles from "./styles";
-import Song from "../../components/song";
-import Comment from "../../components/comment";
-import { useAuth } from "../../lib/authContext";
+import Song from "components/song";
+import Comment from "components/comment";
+import { useAuth } from "lib/authContext";
 
 interface Comment {
   text: string;

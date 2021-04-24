@@ -10,10 +10,10 @@ import Link from "next/link";
 
 import { Search } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/navbar";
-import Song from "../components/song";
+import Navbar from "components/navbar";
+import Song from "components/song";
 // import useStyles, { Searchbar } from "./styles";
-import Playlists from "../lib/services/playlists";
+import Playlists from "lib/services/playlists";
 
 interface Song {
   id: string;

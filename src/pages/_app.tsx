@@ -3,29 +3,27 @@ import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import theme from "../config/dark-theme";
-import { auth } from "../lib/firebase";
-import AuthContext from "../lib/authContext";
-import User from "../lib/services/user"
+import theme from "config/dark-theme";
+import { auth } from "lib/firebase";
+import AuthContext from "lib/authContext";
+import User from "lib/services/user";
+import { AppProps } from "next/app";
 
-export default function MyApp(props) {
-  const { Component, pageProps } = props;
-
+export default function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState({});
-
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
+      jssStyles.parentElement?.removeChild(jssStyles);
     }
 
-    const unsubscribe = auth.onAuthStateChanged(async(user)=> {
-      if (user){
-        const userId = user?.uid
-        const userProfile = await User.getProfile(userId)
-        setUser({userId, ...userProfile}) 
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userId = user?.uid;
+        const userProfile = await User.getProfile(userId);
+        setUser({ userId, ...userProfile });
       }
     });
 
@@ -51,8 +49,3 @@ export default function MyApp(props) {
     </React.Fragment>
   );
 }
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
-};

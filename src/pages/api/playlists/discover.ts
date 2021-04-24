@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { firestore } from "../../../lib/firebase";
+import { firestore } from "lib/firebase";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const discover = firestore.collection("playlists").doc("discover");
@@ -14,4 +14,3 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ message: error });
   }
 };
-

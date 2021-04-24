@@ -12,12 +12,12 @@ import EditIcon from "@material-ui/icons/Edit";
 // import useStyles from "./styles";
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import { firestore } from "../../lib/firebase";
+import { firestore } from "lib/firebase";
 import { useRouter } from "next/router";
-import AuthContext from "../../lib/authContext";
-import User from "../../lib/services/user";
-import Auth from "../../lib/services/auth";
-import Navbar from "../../components/navbar";
+import AuthContext from "lib/authContext";
+import User from "lib/services/user";
+import Auth from "lib/services/auth";
+import Navbar from "components/navbar";
 //import axios from "axios"
 
 const Profile = () => {

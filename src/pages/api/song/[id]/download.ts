@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { firestore, storage } from "../../../../lib/firebase";
+import { firestore, storage } from "lib/firebase";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = <{ id: string }>req.query;

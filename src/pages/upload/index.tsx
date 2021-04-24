@@ -6,31 +6,37 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState, useContext } from "react";
-import Artwork from "../../components/artwork";
-import Navbar from "../../components/navbar";
-import uploadService from "../../lib/services/upload";
-import AuthContext from "../../lib/authContext"
+import Artwork from "components/artwork";
+import Navbar from "components/navbar";
+import uploadService from "lib/services/upload";
+import AuthContext from "lib/authContext";
 
-interface Props { }
+interface Props {}
 
 const Upload = (props: Props) => {
-  const user = useContext(AuthContext)
+  const user = useContext(AuthContext);
 
-  const [data, setData] = useState({ title: "", description: "", songUrl: "", imgUrl: "/images/artwork/1.jpg", tags: "" })
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+    songUrl: "",
+    imgUrl: "/images/artwork/1.jpg",
+    tags: "",
+  });
 
   const handleInput = (e) => {
-    const { name, value } = e.target
-    setData({ ...data, [name]: value })
-  }
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (user) {
-      const upload = await uploadService.uploadHandle({ ...data, ...user })
-      console.log(upload)
+      const upload = await uploadService.uploadHandle({ ...data, ...user });
+      console.log(upload);
     }
-  }
+  };
 
   return (
     <div>
