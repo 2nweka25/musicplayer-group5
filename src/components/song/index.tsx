@@ -5,15 +5,7 @@ import Artwork from "../artwork";
 import { Star } from "@material-ui/icons";
 import Link from "next/link";
 
-interface Props {
-  id: string;
-  artist: string;
-  artworkURL: string;
-  audioURL: string;
-  comments: [];
-  owner: string;
-  title: string;
-}
+interface Props extends Song {}
 
 const Song = ({ id, artworkURL, title, artist }: Props) => {
   const classes = useStyles();
