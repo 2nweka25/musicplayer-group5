@@ -14,18 +14,17 @@ import Navbar from "components/navbar";
 import Song from "components/song";
 // import useStyles, { Searchbar } from "./styles";
 import Playlists from "lib/services/playlists";
+import { InferGetStaticPropsType } from "next";
 
-const Index = () => {
-  // const classes = useStyles();
-  const [playlists, setPlaylsits] = useState<Playlists | null>(null);
+export const getStaticProps = async () => {
+  const playlists: Playlists = await Playlists.getAll();
 
-  useEffect(() => {
-    const discover = Playlists.getDiscover();
-    const newReleases = Playlists.getNewReleases();
+  return { props: { playlists } };
+};
 
-    Promise.all([discover, newReleases]).then((data) => setPlaylsits(data));
-  }, []);
-
+const Index = ({
+  playlists,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <main>
       <Navbar />
@@ -40,7 +39,7 @@ const Index = () => {
           }
         />
 
-        {playlists?.map(({ name, songs }) => (
+        {playlists.map(({ name, songs }) => (
           <Playlist key={name}>
             <Metadata>
               <Typography variant="h5">{name}</Typography>
