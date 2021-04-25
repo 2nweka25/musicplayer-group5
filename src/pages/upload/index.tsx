@@ -39,66 +39,63 @@ const Upload = (props: Props) => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <Container>
-        <Typography variant="h5">Upload Music</Typography>
+    <>
+      <Typography variant="h5">Upload Music</Typography>
 
-        <Box textAlign="center" mt={2}>
-          <Artwork src="/images/artwork/1.jpg" />
+      <Box textAlign="center" mt={2}>
+        <Artwork src="/images/artwork/1.jpg" />
+      </Box>
+
+      <form onSubmit={handleSubmit}>
+        <TextField
+          name="title"
+          variant="outlined"
+          label="Song Name"
+          color="primary"
+          fullWidth
+          margin="normal"
+          onChange={handleInput}
+        />
+
+        <TextField
+          name="description"
+          variant="outlined"
+          label="Song Description"
+          multiline
+          rows={4}
+          color="primary"
+          fullWidth
+          margin="normal"
+          onChange={handleInput}
+        />
+
+        <TextField
+          name="songUrl"
+          variant="outlined"
+          label="Song Url"
+          color="primary"
+          fullWidth
+          margin="normal"
+          onChange={handleInput}
+        />
+
+        <TextField
+          name="tags"
+          variant="outlined"
+          label="Hashtags"
+          color="primary"
+          fullWidth
+          margin="normal"
+          onChange={handleInput}
+        />
+
+        <Box mt={2} width="70%" margin="auto">
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Upload
+          </Button>
         </Box>
-
-        <form onSubmit={handleSubmit}>
-          <TextField
-            name="title"
-            variant="outlined"
-            label="Song Name"
-            color="primary"
-            fullWidth
-            margin="normal"
-            onChange={handleInput}
-          />
-
-          <TextField
-            name="description"
-            variant="outlined"
-            label="Song Description"
-            multiline
-            rows={4}
-            color="primary"
-            fullWidth
-            margin="normal"
-            onChange={handleInput}
-          />
-
-          <TextField
-            name="songUrl"
-            variant="outlined"
-            label="Song Url"
-            color="primary"
-            fullWidth
-            margin="normal"
-            onChange={handleInput}
-          />
-
-          <TextField
-            name="tags"
-            variant="outlined"
-            label="Hashtags"
-            color="primary"
-            fullWidth
-            margin="normal"
-            onChange={handleInput}
-          />
-
-          <Box mt={2} width="70%" margin="auto">
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Upload
-            </Button>
-          </Box>
-        </form>
-      </Container>
-    </div>
+      </form>
+    </>
   );
 };
 
