@@ -130,10 +130,7 @@ const PlaySong = () => {
 
   return (
     <>
-      <ReactHowler
-        src={`https://cors-anywhere.herokuapp.com/${song?.audioURL}`}
-        playing={isPlaying}
-      />
+      <ReactHowler src={`${song?.audioURL}`} playing={isPlaying} />
       <Navbar />
       <Container>
         <Artwork src={song?.artworkURL} />
