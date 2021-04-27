@@ -16,7 +16,7 @@ const useAudioPlayer = () => {
 
   const handleNext: EventHandler = async () => {
     const randomSong = await Songs.getRandomSong();
-    setSong(randomSong);
+    // setSong(randomSong);
     router.push(`/play-song/${randomSong.id}`, undefined, { shallow: true });
   };
 
@@ -24,7 +24,7 @@ const useAudioPlayer = () => {
     router.back();
   };
 
-  return { isPlaying, song, setSong, handlePlay };
+  return { isPlaying, handlePlay };
 };
 
 export default useAudioPlayer;
