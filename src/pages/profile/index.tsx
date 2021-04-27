@@ -91,100 +91,97 @@ const Profile = () => {
   } else {
     return (
       <>
-        <Navbar />
-        <Container>
-          <Box mt={4}>
-            <Typography variant="h5">My Profile</Typography>
-          </Box>
+        <Box mt={4}>
+          <Typography variant="h5">My Profile</Typography>
+        </Box>
 
-          <Avatar
-            style={{
-              width: "150px",
-              height: "150px",
-              margin: "auto",
-              marginTop: "16px",
+        <Avatar
+          style={{
+            width: "150px",
+            height: "150px",
+            margin: "auto",
+            marginTop: "16px",
+          }}
+          src="/images/avatar.svg"
+          alt="avatar"
+        />
+        <Box textAlign="center" mt={2}>
+          <MuiLink
+            underline="always"
+            color="textPrimary"
+            style={{ color: "yellow" }}
+          >
+            Change profile picture
+          </MuiLink>
+        </Box>
+        <Box component="form" mt={4}>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="outlined-basic"
+            name="fullname"
+            label={`${localUser?.first_name} ${localUser?.last_name}`}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" onClick={handleSubmit}>
+                  <EditIcon />
+                </InputAdornment>
+              ),
             }}
-            src="/images/avatar.svg"
-            alt="avatar"
+            onChange={handleInput}
           />
-          <Box textAlign="center" mt={2}>
-            <MuiLink
-              underline="always"
-              color="textPrimary"
-              style={{ color: "yellow" }}
+          <TextField
+            margin="normal"
+            fullWidth
+            id="outlined-basic"
+            name="username"
+            label={localUser?.username}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" onClick={handleSubmit}>
+                  <EditIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleInput}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="outlined-basic"
+            name="email"
+            label={localUser?.email}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" onClick={handleSubmit}>
+                  <EditIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleInput}
+          />
+        </Box>
+        <Box mt={2} display="flex" justifyContent="center">
+          <Button type="submit" variant="outlined" color="primary" fullWidth>
+            Reset password link
+          </Button>
+        </Box>
+        <Box mt={6} width="70%" margin="auto">
+          <Link href="/signup" passHref>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={signout}
             >
-              Change profile picture
-            </MuiLink>
-          </Box>
-          <Box component="form" mt={4}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="outlined-basic"
-              name="fullname"
-              label={`${localUser?.first_name} ${localUser?.last_name}`}
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end" onClick={handleSubmit}>
-                    <EditIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleInput}
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="outlined-basic"
-              name="username"
-              label={localUser?.username}
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end" onClick={handleSubmit}>
-                    <EditIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleInput}
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="outlined-basic"
-              name="email"
-              label={localUser?.email}
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end" onClick={handleSubmit}>
-                    <EditIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleInput}
-            />
-          </Box>
-          <Box mt={2} display="flex" justifyContent="center">
-            <Button type="submit" variant="outlined" color="primary" fullWidth>
-              Reset password link
+              Logout
             </Button>
-          </Box>
-          <Box mt={6} width="70%" margin="auto">
-            <Link href="/signup" passHref>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                onClick={signout}
-              >
-                Logout
-              </Button>
-            </Link>
-          </Box>
-        </Container>
+          </Link>
+        </Box>
       </>
     );
   }

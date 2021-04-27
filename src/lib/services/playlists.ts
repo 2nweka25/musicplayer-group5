@@ -1,17 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "/api/playlists";
+const BASE_URL = "http://localhost:3000/api/playlists";
 
-const getDiscover = async () => {
-  const { data } = await axios.get(`${BASE_URL}/discover`);
+const getAll = async () => {
+  const { data } = await axios.get(`${BASE_URL}`);
   return data;
 };
 
-const getNewReleases = async () => {
-  const { data } = await axios.get(`${BASE_URL}/newReleases`);
-  return data;
-};
-
-const Playlists = { getDiscover, getNewReleases };
+const Playlists = { getAll };
 
 export default Playlists;

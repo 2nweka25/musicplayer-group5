@@ -2,13 +2,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
   song: {
-    marginRight: theme.spacing(2),
     cursor: "pointer",
-
-    "& img": {
-      width: "100px",
-      height: "97px",
-    },
+    marginRight: "30px",
   },
   songInfo: {
     display: "flex",

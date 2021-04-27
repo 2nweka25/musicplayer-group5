@@ -134,80 +134,78 @@ const PlaySong = () => {
         src={`https://cors-anywhere.herokuapp.com/${song?.audioURL}`}
         playing={isPlaying}
       />
-      <Navbar />
-      <Container>
-        <Artwork src={song?.artworkURL} />
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          mt={4}
-        >
-          <GetApp onClick={handleDownload}></GetApp>
-          <Box>
-            <Typography variant="h5">{song?.title}</Typography>
-            <Typography>{song?.artist}</Typography>
-          </Box>
-          <Star />
-        </Box>
-        <Box textAlign="center" mt={2}>
-          <IconButton
-            style={{
-              marginTop: "32px",
-              marginRight: "8px",
-              background: "#950A1B",
-              boxShadow:
-                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
-            }}
-            onClick={handlePrevious}
-          >
-            <SkipPrevious />
-          </IconButton>
-          <IconButton
-            style={{
-              marginTop: "32px",
-              marginRight: "8px",
-              background: "#950A1B",
-              boxShadow:
-                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
-            }}
-            onClick={handlePlay}
-          >
-            {isPlaying ? <Pause /> : <PlayArrow />}
-          </IconButton>
-          <IconButton
-            style={{
-              marginTop: "32px",
-              marginRight: "8px",
-              background: "#950A1B",
-              boxShadow:
-                "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
-            }}
-            onClick={handleNext}
-          >
-            <SkipNext />
-          </IconButton>
-        </Box>
-        <Box>
-          <Slider />
-        </Box>
-        <Box display="flex" justifyContent="space-between">
-          <Repeat />
-          <Replay />
-        </Box>
 
-        <Box
-          mt={2}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          onClick={toggleComments}
-        >
-          <Typography>Comments</Typography>
-          <KeyboardArrowDown />
+      <Artwork src={song?.artworkURL} />
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mt={4}
+      >
+        <GetApp onClick={handleDownload}></GetApp>
+        <Box>
+          <Typography variant="h5">{song?.title}</Typography>
+          <Typography>{song?.artist}</Typography>
         </Box>
-      </Container>
+        <Star />
+      </Box>
+      <Box textAlign="center" mt={2}>
+        <IconButton
+          style={{
+            marginTop: "32px",
+            marginRight: "8px",
+            background: "#950A1B",
+            boxShadow:
+              "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+          }}
+          onClick={handlePrevious}
+        >
+          <SkipPrevious />
+        </IconButton>
+        <IconButton
+          style={{
+            marginTop: "32px",
+            marginRight: "8px",
+            background: "#950A1B",
+            boxShadow:
+              "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+          }}
+          onClick={handlePlay}
+        >
+          {isPlaying ? <Pause /> : <PlayArrow />}
+        </IconButton>
+        <IconButton
+          style={{
+            marginTop: "32px",
+            marginRight: "8px",
+            background: "#950A1B",
+            boxShadow:
+              "3px 5px 10px rgba(0, 0, 0, 0.2), -3px -8px 8px rgba(255, 255, 255, 0.12)",
+          }}
+          onClick={handleNext}
+        >
+          <SkipNext />
+        </IconButton>
+      </Box>
+      <Box>
+        <Slider />
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Repeat />
+        <Replay />
+      </Box>
+
+      <Box
+        mt={2}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        onClick={toggleComments}
+      >
+        <Typography>Comments</Typography>
+        <KeyboardArrowDown />
+      </Box>
 
       <Modal open={showComments} onBackdropClick={toggleComments}>
         <Slide in={showComments} direction="up">

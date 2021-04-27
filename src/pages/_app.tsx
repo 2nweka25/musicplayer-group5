@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,11 +7,15 @@ import { auth } from "lib/firebase";
 import AuthContext from "lib/authContext";
 import User from "lib/services/user";
 import { AppProps } from "next/app";
+import SiteLayout from "components/site-layout";
+import { useRouter } from "next/router";
+import SignIn from "./signin";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState({});
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -24,6 +27,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         const userId = user?.uid;
         const userProfile = await User.getProfile(userId);
         setUser({ userId, ...userProfile });
+      } else {
+        router.push("/signin", undefined, { shallow: true });
       }
     });
 
@@ -31,7 +36,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>My page</title>
         <meta
@@ -43,9 +48,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <CssBaseline />
 
         <AuthContext.Provider value={user}>
-          <Component {...pageProps} />
+          <SiteLayout>
+            {user ? <Component {...pageProps} /> : <SignIn />}
+          </SiteLayout>
         </AuthContext.Provider>
       </ThemeProvider>
-    </React.Fragment>
+    </>
   );
-}
+};
+
+export default MyApp;
