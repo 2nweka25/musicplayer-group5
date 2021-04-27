@@ -4,9 +4,7 @@ interface Song {
   artist: string;
   artworkURL: string;
   audioURL: string;
-
-  owner?: string;
-  comments?: any[];
+  comments: Comments;
 }
 
 interface Playlist {
@@ -14,5 +12,12 @@ interface Playlist {
   songs: Songs;
 }
 
+interface Comment {
+  songId?: string;
+  postedBy: string;
+  text: string;
+}
+
 type Songs = Song[];
 type Playlists = Playlist[];
+type Comments = Comment[];
