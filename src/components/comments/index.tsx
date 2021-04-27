@@ -13,9 +13,15 @@ import useComments from "lib/hooks/useComments";
 import { FormEventHandler, useState } from "react";
 import Comment from "./comment";
 
-const Comments = ({ songId }: { songId?: string }) => {
-  const { comments, showComments, toggleComments, postComment } = useComments(
-    songId
+interface Props {
+  songId?: string;
+  comments: Comments;
+  setComments: any;
+}
+
+const Comments = ({ songId, comments, setComments }: Props) => {
+  const { showComments, toggleComments, postComment } = useComments(
+    setComments
   );
 
   const { userId } = useAuth();

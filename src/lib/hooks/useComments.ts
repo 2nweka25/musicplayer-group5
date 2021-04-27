@@ -1,19 +1,8 @@
 import Songs from "lib/services/song";
-import {
-  FormEventHandler,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import { MouseEventHandler, useState } from "react";
 
-const useComments = (songId: string) => {
-  const [comments, setComments] = useState<Comments | null>(null);
+const useComments = (setComments: any) => {
   const [showComments, setShowComments] = useState(false);
-
-  useEffect(() => {
-    if (!songId) return;
-    Songs.findById(songId).then((song) => setComments(song.comments));
-  }, []);
 
   const toggleComments: MouseEventHandler<SVGSVGElement | HTMLElement> = () => {
     setShowComments(!showComments);
@@ -25,7 +14,7 @@ const useComments = (songId: string) => {
     setComments(newComments);
   };
 
-  return { comments, setComments, showComments, toggleComments, postComment };
+  return { showComments, toggleComments, postComment };
 };
 
 export default useComments;

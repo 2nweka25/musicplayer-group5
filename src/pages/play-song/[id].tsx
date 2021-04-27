@@ -10,8 +10,7 @@ const PlaySong = () => {
   const { id } = router.query;
 
   const [song, setSong] = useState<Song | null>(null);
-
-  const { comments, setComments } = useComments();
+  const [comments, setComments] = useState<Comments | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -22,10 +21,16 @@ const PlaySong = () => {
     });
   }, [id]);
 
+  console.log(comments);
+
   return (
     <>
       <AudioPlayer {...song} setSong={setSong} />
-      <Comments songId={song?.id} comments={comments} />
+      <Comments
+        songId={song?.id}
+        comments={comments}
+        setComments={setComments}
+      />
     </>
   );
 };
