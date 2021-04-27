@@ -12,7 +12,6 @@ const uploadHandle = async (data) => {
 }
 
 const uploadImage = (img) => {
-    // Get image name
     const split = img.split("/")
     const name = split[split.length - 1]
 
@@ -21,21 +20,17 @@ const uploadImage = (img) => {
     };
 
     const storageRef = firebase.storage().ref();
-
-    // Upload file
     var uploadTask = storageRef.child('artwork/' + name).put(img, newMetadata);
-    // Listen for state changes, errors, and completion of the upload.
 
-    return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+    return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                case firebase.storage.TaskState.PAUSED:
                     console.log('Upload is paused');
                     break;
-                case firebase.storage.TaskState.RUNNING: // or 'running'
+                case firebase.storage.TaskState.RUNNING:
                     console.log('Upload is running');
                     break;
             }
@@ -43,13 +38,10 @@ const uploadImage = (img) => {
         (error) => {
             switch (error.code) {
                 case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
                     break;
                 case 'storage/canceled':
-                    // User canceled the upload
                     break;
                 case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
                     break;
             }
         },
@@ -64,31 +56,26 @@ const uploadImage = (img) => {
 }
 
 const uploadSong = (song) => {
+    // Get image name
+    const split = song.split("/")
+    const name = split[split.length - 1]
 
     var newMetadata = {
         contentType: 'audio/mpeg'
     };
 
-    // Get image name
-    const split = song.split("/")
-    const name = split[split.length - 1]
-
     const storageRef = firebase.storage().ref();
-
-    // Upload file
     var uploadTask = storageRef.child('songs/' + name).put(song, newMetadata);
 
-    // Listen for state changes, errors, and completion of the upload.
-    return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+    return uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                case firebase.storage.TaskState.PAUSED:
                     console.log('Upload is paused');
                     break;
-                case firebase.storage.TaskState.RUNNING: // or 'running'
+                case firebase.storage.TaskState.RUNNING:
                     console.log('Upload is running');
                     break;
             }
@@ -96,13 +83,10 @@ const uploadSong = (song) => {
         (error) => {
             switch (error.code) {
                 case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
                     break;
                 case 'storage/canceled':
-                    // User canceled the upload
                     break;
                 case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
                     break;
             }
         },
@@ -115,8 +99,6 @@ const uploadSong = (song) => {
         }
     );
 }
-
-
 
 const uploadService = { uploadHandle };
 

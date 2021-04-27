@@ -15,17 +15,26 @@ export default function MyApp(props) {
 
 
   React.useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(() => console.log('service worker registered.'))
+        .catch(err => console.dir(err));
+    }
+  }, [])
+
+  React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
-    const unsubscribe = auth.onAuthStateChanged(async(user)=> {
-      if (user){
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
         const userId = user?.uid
         const userProfile = await User.getProfile(userId)
-        setUser({userId, ...userProfile}) 
+        setUser({ userId, ...userProfile })
       }
     });
 

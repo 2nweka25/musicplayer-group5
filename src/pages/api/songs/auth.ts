@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { auth } from "../../lib/firebase"
+import { auth } from "../../../lib/firebase"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "POST") {

@@ -6,7 +6,16 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <meta charSet="UTF-8" />
+          <meta name="theme-color" content="#FC1616" />
+          <link rel="apple-touch-icon" href="touch-icon-iphone.png" />
+          <link rel="apple-touch-icon" sizes="128x128" href="/icon_128x128.png" />
+          <link rel="apple-touch-icon" sizes="192x192" href="/icon_192x192.png" />
+          <link rel="apple-touch-icon" sizes="256x256" href="/icon_256x256.png" />
+          <link rel="manifest" href="/manifest.json" crossOrigin="use-credentials" />
+        </Head>
+
         <body>
           <Main />
           <NextScript />
