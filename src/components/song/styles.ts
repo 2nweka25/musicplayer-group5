@@ -4,8 +4,11 @@ export default makeStyles((theme) => ({
   song: {
     marginRight: theme.spacing(2),
     cursor: "pointer",
-    width: "100px",
-    height: "97px",
+
+    "& img": {
+      width: "100px",
+      height: "97px",
+    },
   },
   songInfo: {
     display: "flex",
