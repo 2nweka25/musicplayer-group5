@@ -8,7 +8,6 @@ const useAudioPlayer = (setSong: any) => {
   const router = useRouter();
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showComments, setShowComments] = useState(false);
 
   const handlePlay: EventHandler = (e) => {
     setIsPlaying(!isPlaying);
