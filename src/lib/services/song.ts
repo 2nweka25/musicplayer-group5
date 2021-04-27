@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const findById = async (id: string | string[]) => {
-  const { data } = await axios.get(`/api/songs/${id}`);
+  const { data } = await axios.get(`/api/song/${id}`);
   return data;
 };
 
 const getRandomSong = async () => {
-  const { data } = await axios.get(`/api/songs/random`);
+  const { data } = await axios.get(`/api/song/random`);
   return data;
 };
 
@@ -15,7 +15,7 @@ const getComments = async (id: string | string[]) => {
   return data;
 };
 
-const getAudioUrl  = async (id: string | string[]) => {
+const getAudioUrl = async (id: string | string[]) => {
   const { data } = await axios.get(`/api/song/${id}/download`);
   return data;
 };
@@ -26,6 +26,5 @@ const setSong = async (songData) => {
 };
 
 const Songs = { findById, getRandomSong, getComments, setSong, getAudioUrl };
-
 
 export default Songs;
