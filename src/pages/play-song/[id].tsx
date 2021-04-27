@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/router";
-
 import Songs from "lib/services/song";
-import useAudioPlayer from "lib/hooks/useAudioPlayer";
 import AudioPlayer from "components/audio-player";
 import Comments from "components/comments";
-import Navbar from "components/navbar";
-import { Container } from "@material-ui/core";
 
 const PlaySong = () => {
   const router = useRouter();
@@ -23,11 +18,8 @@ const PlaySong = () => {
 
   return (
     <>
-      <Navbar />
-      <Container>
-        <AudioPlayer {...song} />
-        {/* <Comments /> */}
-      </Container>
+      <AudioPlayer {...song} />
+      {/* <Comments /> */}
     </>
   );
 };
