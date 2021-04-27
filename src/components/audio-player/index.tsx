@@ -2,8 +2,8 @@ import { Box, IconButton, Slider, Typography } from "@material-ui/core";
 
 import {
   GetApp,
-  KeyboardArrowDown,
   Pause,
+  PlayArrow,
   Repeat,
   Replay,
   SkipNext,
@@ -13,23 +13,27 @@ import {
 
 import Artwork from "components/artwork";
 import useAudioPlayer from "lib/hooks/useAudioPlayer";
+import { Dispatch, SetStateAction } from "react";
 import ReactHowler from "react-howler";
 
 import useStyles from "./styles";
 
-interface Props extends Song {}
+interface Props extends Song {
+  setSong: Dispatch<SetStateAction<Song | null>>;
+}
 
 const AudioPlayer = (song: Props) => {
-  const { artist, title, audioURL, artworkURL } = song;
+  const { artist, title, audioURL, artworkURL, setSong } = song;
 
-  const { isPlaying } = useAudioPlayer();
+  const { isPlaying, handlePlay, handlePrevious, handleNext } = useAudioPlayer(
+    setSong
+  );
+
   const classes = useStyles();
-
-  console.log(song);
 
   return (
     <>
-      <ReactHowler src={[audioURL]} playing={false} />
+      <ReactHowler src={[audioURL]} playing={isPlaying} />
       <Artwork src={artworkURL} />
 
       <Box
@@ -47,23 +51,13 @@ const AudioPlayer = (song: Props) => {
         <Star />
       </Box>
       <Box textAlign="center" mt={2}>
-        <IconButton
-          className={classes.mediaControl}
-          // onClick={handlePrevious}
-        >
+        <IconButton className={classes.mediaControl} onClick={handlePrevious}>
           <SkipPrevious />
         </IconButton>
-        <IconButton
-          className={classes.mediaControl}
-          // onClick={handlePlay}
-        >
-          {/* {isPlaying ? <Pause /> : <PlayArrow />} */}
-          <Pause />
+        <IconButton className={classes.mediaControl} onClick={handlePlay}>
+          {isPlaying ? <Pause /> : <PlayArrow />}
         </IconButton>
-        <IconButton
-          className={classes.mediaControl}
-          // onClick={handleNext}
-        >
+        <IconButton className={classes.mediaControl} onClick={handleNext}>
           <SkipNext />
         </IconButton>
       </Box>
@@ -73,17 +67,6 @@ const AudioPlayer = (song: Props) => {
       <Box display="flex" justifyContent="space-between">
         <Repeat />
         <Replay />
-      </Box>
-      <Box
-        mt={2}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        // onClick={toggleComments}
-      >
-        <Typography>Comments</Typography>
-        <KeyboardArrowDown />
       </Box>
     </>
   );

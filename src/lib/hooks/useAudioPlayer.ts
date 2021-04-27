@@ -4,7 +4,7 @@ import { MouseEventHandler, useState } from "react";
 
 type EventHandler = MouseEventHandler<HTMLButtonElement>;
 
-const useAudioPlayer = () => {
+const useAudioPlayer = (setSong: any) => {
   const router = useRouter();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -16,7 +16,7 @@ const useAudioPlayer = () => {
 
   const handleNext: EventHandler = async () => {
     const randomSong = await Songs.getRandomSong();
-    // setSong(randomSong);
+    setSong(randomSong);
     router.push(`/play-song/${randomSong.id}`, undefined, { shallow: true });
   };
 
@@ -24,7 +24,7 @@ const useAudioPlayer = () => {
     router.back();
   };
 
-  return { isPlaying, handlePlay };
+  return { isPlaying, handlePlay, handlePrevious, handleNext };
 };
 
 export default useAudioPlayer;

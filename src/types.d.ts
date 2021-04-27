@@ -13,6 +13,7 @@ interface Playlist {
 }
 
 interface Comment {
+  songId?: string;
   postedBy: string;
   text: string;
 }
