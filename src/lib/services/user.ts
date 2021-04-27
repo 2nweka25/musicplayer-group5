@@ -5,7 +5,15 @@ const getProfile = async (id: string | string[]) => {
   return data;
 };
 
+const getFavouriteSongs = async (userId: string) => {
+  const { data } = await axios.get<Songs>(`/api/user/${userId}/favourites`);
+  return data;
+};
 
-const User = { getProfile };
+const addToFavouriteSongs = async (song: Song, userId: string) => {
+  await axios.post(`/api/user/${userId}/favourites`, song);
+};
+
+const User = { getProfile, getFavouriteSongs, addToFavouriteSongs };
 
 export default User;

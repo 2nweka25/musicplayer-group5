@@ -12,8 +12,10 @@ import {
 } from "@material-ui/icons";
 
 import Artwork from "components/artwork";
+import { useAuth } from "lib/authContext";
 import useAudioPlayer from "lib/hooks/useAudioPlayer";
-import { Dispatch, SetStateAction } from "react";
+import User from "lib/services/user";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ReactHowler from "react-howler";
 
 import useStyles from "./styles";
@@ -23,13 +25,31 @@ interface Props extends Song {
 }
 
 const AudioPlayer = (song: Props) => {
-  const { artist, title, audioURL, artworkURL, setSong } = song;
+  const { id, artist, title, audioURL, artworkURL, setSong } = song;
+
+  const [favourite, setFavourite] = useState(false);
+
+  const { userId } = useAuth();
 
   const { isPlaying, handlePlay, handlePrevious, handleNext } = useAudioPlayer(
     setSong
   );
 
   const classes = useStyles();
+
+  const addFavourite = async () => {
+    if (!favourite) {
+      User.addToFavouriteSongs(song, userId);
+      setFavourite(true);
+    }
+  };
+
+  useEffect(() => {
+    User.getFavouriteSongs(userId).then((favouriteSongs) => {
+      const favourites = favouriteSongs.map((item) => item.id);
+      favourites.includes(id) && setFavourite(true);
+    });
+  }, []);
 
   return (
     <>
@@ -48,7 +68,10 @@ const AudioPlayer = (song: Props) => {
           <Typography variant="h5">{title}</Typography>
           <Typography>{artist}</Typography>
         </Box>
-        <Star />
+        <Star
+          className={favourite ? classes.favourite : ""}
+          onClick={addFavourite}
+        />
       </Box>
       <Box textAlign="center" mt={2}>
         <IconButton className={classes.mediaControl} onClick={handlePrevious}>
