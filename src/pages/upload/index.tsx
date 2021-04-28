@@ -42,7 +42,7 @@ const Upload = (props: Props) => {
     <>
       <Typography variant="h5">Upload Music</Typography>
 
-      <Box textAlign="center" mt={2}>
+      <Box textAlign="center" margin="auto" mt={2} height={150} width={150}>
         <Artwork src="/images/artwork/1.jpg" />
       </Box>
 
