@@ -1,5 +1,4 @@
-import { Avatar, Box, Typography } from "@material-ui/core";
-import useStyles from "./styles";
+import { Avatar, styled, Typography } from "@material-ui/core";
 
 interface Props {
   text: string;
@@ -7,14 +6,28 @@ interface Props {
 }
 
 const Comment = ({ text, createdByArtist = false }: Props) => {
-  const classes = useStyles({ createdByArtist });
-
   return (
-    <div className={classes.comment}>
+    <StyledComment createdByArtist={createdByArtist}>
       <Avatar />
       <Typography>{text}</Typography>
-    </div>
+    </StyledComment>
   );
 };
 
 export default Comment;
+
+const StyledComment = styled("div")(({ theme, createdByArtist }: any) => ({
+  display: "flex",
+  marginBottom: "16px",
+  flexDirection: createdByArtist ? "row-reverse" : "row",
+
+  "& p": {
+    borderRadius: "6px",
+    flex: 1,
+    padding: "8px",
+    marginLeft: !createdByArtist ? "8px" : "",
+    marginRight: createdByArtist && "8px",
+    color: createdByArtist ? "black" : "white",
+    background: createdByArtist ? "white" : "#131313",
+  },
+}));

@@ -19,7 +19,7 @@ interface Props {
   setComments: any;
 }
 
-const Comments = ({ songId, comments, setComments }: Props) => {
+const Comments = ({ songId, comments, setComments }: any) => {
   const { showComments, toggleComments, postComment } = useComments(
     setComments
   );
@@ -75,7 +75,7 @@ const Comments = ({ songId, comments, setComments }: Props) => {
               flexDirection="column"
               justifyContent="flex-end"
             >
-              {comments?.map((comment, i) => (
+              {comments?.map((comment: any, i: any) => (
                 <Comment key={i} {...comment} />
               ))}
 

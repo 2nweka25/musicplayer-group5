@@ -24,7 +24,7 @@ interface Props extends Song {
   setSong: Dispatch<SetStateAction<Song | null>>;
 }
 
-const AudioPlayer = (song: Props) => {
+const AudioPlayer = (song: any) => {
   const { id, artist, title, audioURL, artworkURL, setSong } = song;
 
   const [favourite, setFavourite] = useState(false);

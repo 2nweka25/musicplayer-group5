@@ -32,13 +32,13 @@ const SignUp: FC<FormData> = ({}) => {
   });
 
   // Watch input
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   //Handle form data
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const response = await Auth.signUp(formData);

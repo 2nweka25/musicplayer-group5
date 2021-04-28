@@ -68,19 +68,19 @@ const Profile = () => {
   };
 
   // Watch input
-  const handleInput = (e) => {
+  const handleInput = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   // If no data given, save
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     updateUser();
   };
 
   // Sign Out and redirect to signin page
-  const signout = async (e) => {
+  const signout = async (e: any) => {
     e.preventDefault();
     const response = await Auth.signOut();
     response ? router.push("/signin") : console.log("Something went wrong!");

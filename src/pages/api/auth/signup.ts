@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           var user = userCredential.user;
-          firestore.collection("users").doc(user.uid).set({
+          firestore.collection("users").doc(user?.uid).set({
             email: email,
             password: password,
             first_name: firstname,

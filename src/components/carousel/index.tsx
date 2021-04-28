@@ -11,7 +11,7 @@ interface Props {
   items: Songs;
 }
 
-const Carousel = ({ text, items }: Props) => (
+const Carousel = ({ text, items }: any) => (
   <Box mt={3}>
     <Box
       display="flex"
@@ -28,7 +28,7 @@ const Carousel = ({ text, items }: Props) => (
     </Box>
 
     <MultiCarousel {...settings}>
-      {items.map((song) => (
+      {items.map((song: any) => (
         <Song key={song.id} {...song} />
       ))}
     </MultiCarousel>
