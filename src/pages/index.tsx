@@ -4,17 +4,15 @@ import Playlists from "lib/services/playlists";
 import Carousel from "components/carousel";
 
 import { Search } from "@material-ui/icons";
-import { InferGetStaticPropsType } from "next";
+import { useEffect, useState } from "react";
 
-export const getStaticProps = async () => {
-  const playlists: Playlists = await Playlists.getAll();
+const Index = () => {
+  const [playlists, setPlaylists] = useState<null | Playlists>(null);
 
-  return { props: { playlists } };
-};
+  useEffect(() => {
+    Playlists.getAll().then((data) => setPlaylists(data));
+  }, []);
 
-const Index = ({
-  playlists,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <Searchbar
@@ -27,7 +25,7 @@ const Index = ({
         }
       />
 
-      {playlists.map(({ name, songs }) => (
+      {playlists?.map(({ name, songs }) => (
         <Carousel key={name} text={name} items={songs} />
       ))}
     </>

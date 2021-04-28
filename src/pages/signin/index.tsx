@@ -15,12 +15,12 @@ const SignIn = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const user = await Auth.signIn(formData);

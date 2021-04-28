@@ -20,7 +20,7 @@ const getAudioUrl = async (id: string | string[]) => {
   return data;
 };
 
-const setSong = async (songData) => {
+const setSong = async (songData: any) => {
   const { data } = await axios.post(`/api/song/upload`, { ...songData });
   return data;
 };

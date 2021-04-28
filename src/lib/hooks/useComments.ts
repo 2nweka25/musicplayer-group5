@@ -8,7 +8,7 @@ const useComments = (setComments: any) => {
     setShowComments(!showComments);
   };
 
-  const postComment = async (comment: Comment, songId: string) => {
+  const postComment = async (comment: any, songId: any) => {
     comment.songId = songId;
     const newComments = await Songs.postComment(songId, comment);
     setComments(newComments);
